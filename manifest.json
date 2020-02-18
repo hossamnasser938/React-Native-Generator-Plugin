@@ -1,23 +1,28 @@
 {
-  "name" : "Generate React Native UI",
-  "host" : {
-    "app" : "XD",
-    "minVersion" : "21.0"
+  "name": "Generate React Native UI",
+  "host": {
+    "app": "XD",
+    "minVersion": "21.0"
   },
-  "id" : "ecd83aaa",
-  "icons" : [ {
-    "path" : "images/icon@1x.png",
-    "width" : 24,
-    "height" : 24
-  }, {
-    "path" : "images/icon@2x.png",
-    "width" : 48,
-    "height" : 48
-  } ],
-  "uiEntryPoints" : [ {
-    "label" : "Create Rectangle",
-    "type" : "menu",
-    "commandId" : "createRectangle"
-  } ],
-  "version" : "0.0.1"
+  "id": "ecd83aaa",
+  "icons": [
+    {
+      "path": "images/icon@1x.png",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "path": "images/icon@2x.png",
+      "width": 48,
+      "height": 48
+    }
+  ],
+  "uiEntryPoints": [
+    {
+      "label": "Generate",
+      "type": "menu",
+      "commandId": "generate"
+    }
+  ],
+  "version": "0.0.1"
 }
