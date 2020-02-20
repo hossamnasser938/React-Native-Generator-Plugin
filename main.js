@@ -1,6 +1,6 @@
 const { Artboard } = require("scenegraph");
 const { generateRectangleCode } = require("./generators/generateRectangleCode");
-
+const { generateEllipseCode } = require("./generators/generateEllipseCode");
 let code = "";
 
 async function generate(selection, documentRoot) {
@@ -63,10 +63,6 @@ function generateLeafNodeCode(leafNode) {
 
     default:
   }
-}
-
-function generateEllipseCode(ellipse) {
-  return `<Ellipse />\n`;
 }
 
 function generatePolygonCode(polygon) {
