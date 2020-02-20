@@ -5,6 +5,12 @@ const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
 
+/**
+ * generates common style attributes between all graphic nodes
+ * such as (Artboard, Rectangle, Ellipse, Polygon, LinePath, BooleanGroup, Text).
+ * @param {*} graphicNode an instance of GraphicNode
+ * @returns a style object
+ */
 function generateGraphicNodeStyles(graphicNode) {
   const style = {};
 

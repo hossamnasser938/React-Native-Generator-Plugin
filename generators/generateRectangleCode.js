@@ -3,6 +3,11 @@ const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
 
+/**
+ * generates code for rectangle element
+ * @param {*} rectangle an instance of Rectangle
+ * @returns string ui code
+ */
 function generateRectangleCode(rectangle) {
   const style = generateGraphicNodeStyles(rectangle);
 
