@@ -11,6 +11,8 @@ const {
  * @returns string ui code
  */
 function generateLineCode(line) {
+  // TODO: handle diagonal lines
+
   const style = {};
 
   const { start, end, strokeEnabled, stroke, strokeWidth } = line;
