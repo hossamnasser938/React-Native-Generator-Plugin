@@ -2,6 +2,7 @@ const { Artboard } = require("scenegraph");
 const { generateRectangleCode } = require("./generators/generateRectangleCode");
 const { generateEllipseCode } = require("./generators/generateEllipseCode");
 const { generateLineCode } = require("./generators/generateLineCode");
+const { generateTextCode } = require("./generators/generateTextCode");
 
 let code = "";
 
@@ -77,10 +78,6 @@ function generatePathCode(path) {
 
 function generateBooleanGroupCode(booleanGroup) {
   return `<Boolean />\n`;
-}
-
-function generateTextCode(text) {
-  return `<Text />\n`;
 }
 
 module.exports = {
