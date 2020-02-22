@@ -1,4 +1,4 @@
-const { convertFill } = require("../helpers/convertFill");
+const { convertFill } = require("../../helpers/convertFill");
 const {
   convertFontFamilyAttribute,
   convertFontStyleAttribute,
