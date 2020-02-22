@@ -1,6 +1,4 @@
-const {
-  convertColorObjToHexColor
-} = require("../../helpers/convertColorObjToHexColor");
+const { convertFill } = require("../helpers/convertFill");
 const {
   convertFontFamilyAttribute,
   convertFontStyleAttribute,
@@ -50,8 +48,7 @@ function generateTextStyles(textElement) {
   };
 
   if (fillEnabled || strokeEnabled) {
-    // Handled only Color. TODO: handle LinearGradientFill, RadialGradientFill, ImageFill
-    style.color = convertColorObjToHexColor(fillEnabled ? fill : stroke);
+    style.color = fillEnabled ? convertFill(fill) : stroke.toHex(true);
   }
 
   return style;

@@ -1,9 +1,7 @@
 const {
-  convertColorObjToHexColor
-} = require("../helpers/convertColorObjToHexColor");
-const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
+const { convertFill } = require("../helpers/convertFill");
 
 /**
  * generates common style attributes between all graphic nodes
@@ -17,15 +15,12 @@ function generateGraphicNodeStyles(graphicNode) {
   const { fillEnabled, fill, strokeEnabled, stroke, strokeWidth } = graphicNode;
 
   if (fillEnabled) {
-    // Handled only Color. TODO: handle LinearGradientFill, RadialGradientFill, ImageFill
-    const fillAsHexColor = convertColorObjToHexColor(fill);
-    style.backgroundColor = fillAsHexColor;
+    style.backgroundColor = convertFill(fill);
   }
 
   if (strokeEnabled) {
-    // Handled only Color. TODO: handle LinearGradientFill, RadialGradientFill, ImageFill
     style.borderWidth = pixelUnitPreprocessor(strokeWidth);
-    const strokeAsHexColor = convertColorObjToHexColor(stroke);
+    const strokeAsHexColor = stroke.toHex(true);
     style.borderColor = strokeAsHexColor;
   }
 

@@ -1,6 +1,4 @@
-const {
-  convertColorObjToHexColor
-} = require("../../helpers/convertColorObjToHexColor");
+const { convertFill } = require("../helpers/convertFill");
 const {
   convertFontFamilyAttribute,
   convertFontStyleAttribute,
@@ -48,7 +46,7 @@ function generateTextRangeStyles(textRange) {
 
   if (fill) {
     // Handled only Color. TODO: handle LinearGradientFill, RadialGradientFill, ImageFill
-    style.color = convertColorObjToHexColor(fill);
+    style.color = convertFill(fill);
   }
 
   return style;

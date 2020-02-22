@@ -1,7 +1,4 @@
 const {
-  convertColorObjToHexColor
-} = require("../helpers/convertColorObjToHexColor");
-const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
 
@@ -18,8 +15,7 @@ function generateLineCode(line) {
   const { start, end, strokeEnabled, stroke, strokeWidth } = line;
 
   if (strokeEnabled) {
-    // Handled only Color. TODO: handle LinearGradientFill, RadialGradientFill, ImageFill
-    style.backgroundColor = convertColorObjToHexColor(stroke);
+    style.backgroundColor = stroke.toHex(true);
 
     if (start.x !== end.x) {
       // horizontal
