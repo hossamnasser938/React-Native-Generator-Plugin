@@ -2,7 +2,7 @@ const { Artboard } = require("scenegraph");
 const { generateRectangleCode } = require("./generators/generateRectangleCode");
 const { generateEllipseCode } = require("./generators/generateEllipseCode");
 const { generateLineCode } = require("./generators/generateLineCode");
-const { generateTextCode } = require("./generators/generateTextCode");
+const { generateTextCode } = require("./generators/generateTextCode/index");
 
 let code = "";
 
