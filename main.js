@@ -3,6 +3,7 @@ const { generateRectangleCode } = require("./generators/generateRectangleCode");
 const { generateEllipseCode } = require("./generators/generateEllipseCode");
 const { generateLineCode } = require("./generators/generateLineCode");
 const { generateTextCode } = require("./generators/generateTextCode/index");
+const { generatePathCode } = require("./generators/generatePathCode");
 
 let code = "";
 
@@ -70,10 +71,6 @@ function generateLeafNodeCode(leafNode) {
 
 function generatePolygonCode(polygon) {
   return `<Polygon />\n`;
-}
-
-function generatePathCode(path) {
-  return `<Path />\n`;
 }
 
 function generateBooleanGroupCode(booleanGroup) {
