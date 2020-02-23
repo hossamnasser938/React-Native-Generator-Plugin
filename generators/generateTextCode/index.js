@@ -11,7 +11,7 @@ function generateTextCode(textElement) {
 
   const { text, styleRanges } = textElement;
 
-  if (styleRanges.length === 1 && styleRanges[0].length === 0) {
+  if (styleRanges.length === 1) {
     // one style text
     const style = generateTextStyles(textElement);
 
