@@ -1,9 +1,5 @@
 const { Artboard } = require("scenegraph");
-const { generateRectangleCode } = require("./generators/generateRectangleCode");
-const { generateEllipseCode } = require("./generators/generateEllipseCode");
-const { generateLineCode } = require("./generators/generateLineCode");
-const { generateTextCode } = require("./generators/generateTextCode/index");
-const { generatePathCode } = require("./generators/generatePathCode");
+const { generateLeafNodeCode } = require("./generators/generateLeafNodeCode");
 
 let code = "";
 
@@ -31,50 +27,8 @@ function loopOverTree(tree) {
 
     code += `</View>\n`;
   } else {
-    generateLeafNodeCode(tree);
+    code += generateLeafNodeCode(tree);
   }
-}
-
-function generateLeafNodeCode(leafNode) {
-  switch (leafNode.constructor.name) {
-    case "Rectangle":
-      code += generateRectangleCode(leafNode);
-      break;
-
-    case "Ellipse":
-      code += generateEllipseCode(leafNode);
-      break;
-
-    case "Polygon":
-      code += generatePolygonCode(leafNode);
-      break;
-
-    case "Line":
-      code += generateLineCode(leafNode);
-      break;
-
-    case "Path":
-      code += generatePathCode(leafNode);
-      break;
-
-    case "BooleanGroup":
-      code += generateBooleanGroupCode(leafNode);
-      break;
-
-    case "Text":
-      code += generateTextCode(leafNode);
-      break;
-
-    default:
-  }
-}
-
-function generatePolygonCode(polygon) {
-  return `<Polygon />\n`;
-}
-
-function generateBooleanGroupCode(booleanGroup) {
-  return `<Boolean />\n`;
 }
 
 module.exports = {
