@@ -64,6 +64,45 @@ ChildrenMatrix.prototype.getPossibleSlots = function() {
   }, []);
 };
 
+ChildrenMatrix.prototype.getMostSuitableSlot = function(newChild) {
+  const possibleSlots = this.getPossibleSlots();
+
+  const slotsMetrics = [];
+
+  // evaluate slots
+  possibleSlots.forEach(slot => {
+    let metric = 0;
+
+    const rowNeighbors = this.matrix[slot.i].filter(item => item);
+
+    const columnNeighbors = this.matrix.reduce((acc, v) => {
+      return v[slot.j] ? acc.concat(v[slot.j]) : acc;
+    }, []);
+
+    rowNeighbors.forEach(rowNeighbor => {
+      metric += Math.abs(newChild.globalBounds.y - rowNeighbor.globalBounds.y);
+    });
+
+    columnNeighbors.forEach(columnNeighbor => {
+      metric += Math.abs(
+        newChild.globalBounds.x - columnNeighbor.globalBounds.x
+      );
+    });
+
+    slotsMetrics.push({ slot, metric });
+  });
+
+  const leastMetricSlot = slotsMetrics.reduce((acc, v) => {
+    if (v.metric < acc.metric) {
+      return v;
+    }
+
+    return acc;
+  }, slotsMetrics[0]);
+
+  return leastMetricSlot.slot;
+};
+
 module.exports = {
   ChildrenMatrix
 };
