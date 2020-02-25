@@ -1,0 +1,19 @@
+{
+  "name": "generate-react-native-ui-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Hossam Abdelnaser",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^25.1.0"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./jestSetup.js"
+    ]
+  }
+}
