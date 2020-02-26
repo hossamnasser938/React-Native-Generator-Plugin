@@ -115,6 +115,59 @@ ChildrenMatrix.prototype.getMostSuitableSlot = function(newChild) {
   return leastMetricSlot.slot;
 };
 
+ChildrenMatrix.prototype.generateCode = function() {
+  /* initial assumptions: 
+  - children are leaves
+  - in case of dispersed children, primary axis is fixed to column
+  */
+
+  // check whether children exist in one column
+  const childrenExistInOneColumn = this.matrix.reduce(
+    (acc, tuple) => !!tuple[0] && acc,
+    true
+  );
+
+  if (childrenExistInOneColumn) {
+    return `<View>
+    ${Array(this.n)
+      .fill(1)
+      .map(_ => "<Item />")}
+</View>`;
+  }
+
+  // check whether children exist in one row
+  const childrenExistInOneRow = this.matrix[0].reduce(
+    (acc, v) => !!v && acc,
+    true
+  );
+
+  if (childrenExistInOneRow) {
+    return `<View style={{flexDirection: 'row'}}>
+    ${Array(this.n)
+      .fill(1)
+      .map(_ => "<Item />")}
+</View>`;
+  }
+
+  // children are dispersed
+  const getTupleChildrenCount = function(tuple) {
+    return tuple.reduce((acc, v) => (!!v ? acc + 1 : acc), 0);
+  };
+
+  return `<View>
+  ${this.matrix.map(tuple => {
+    const childrenCount = getTupleChildrenCount(tuple);
+
+    return (
+      childrenCount &&
+      `<View ${childrenCount > 1 ? "style={{flexDirection: 'row'}}" : ""}>
+    ${tuple.map(child => child && "<Item />")}
+  </View>\n`
+    );
+  })}
+</View>`;
+};
+
 module.exports = {
   ChildrenMatrix
 };
