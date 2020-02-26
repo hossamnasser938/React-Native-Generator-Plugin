@@ -26,6 +26,24 @@ ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
   }, []);
 };
 
+ChildrenMatrix.prototype.calculateSlotChildMetric = function(slot, newChild) {
+  let metric = 0;
+
+  const rowNeighbors = this.getSlotRowNeighbors(slot);
+
+  const columnNeighbors = this.getSlotColumnNeighbors(slot);
+
+  rowNeighbors.forEach(rowNeighbor => {
+    metric += Math.abs(newChild.globalBounds.y - rowNeighbor.globalBounds.y);
+  });
+
+  columnNeighbors.forEach(columnNeighbor => {
+    metric += Math.abs(newChild.globalBounds.x - columnNeighbor.globalBounds.x);
+  });
+
+  return metric;
+};
+
 /**
  * getPossibleSlots
  * @returns an array of objects [{i, j}] such that i is the first index and j is the second index of a possible slot
@@ -81,21 +99,7 @@ ChildrenMatrix.prototype.getMostSuitableSlot = function(newChild) {
 
   // evaluate slots
   possibleSlots.forEach(slot => {
-    let metric = 0;
-
-    const rowNeighbors = this.getSlotRowNeighbors(slot);
-
-    const columnNeighbors = this.getSlotColumnNeighbors(slot);
-
-    rowNeighbors.forEach(rowNeighbor => {
-      metric += Math.abs(newChild.globalBounds.y - rowNeighbor.globalBounds.y);
-    });
-
-    columnNeighbors.forEach(columnNeighbor => {
-      metric += Math.abs(
-        newChild.globalBounds.x - columnNeighbor.globalBounds.x
-      );
-    });
+    const metric = this.calculateSlotChildMetric(slot, newChild);
 
     slotsMetrics.push({ slot, metric });
   });
