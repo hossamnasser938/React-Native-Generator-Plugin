@@ -16,6 +16,16 @@ ChildrenMatrix.prototype.setChild = function(i, j, child) {
   this.matrix[i][j] = child;
 };
 
+ChildrenMatrix.prototype.getSlotRowNeighbors = function({ i, j }) {
+  return this.matrix[i].filter(item => item);
+};
+
+ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
+  return this.matrix.reduce((acc, v) => {
+    return v[j] ? acc.concat(v[j]) : acc;
+  }, []);
+};
+
 /**
  * getPossibleSlots
  * @returns an array of objects [{i, j}] such that i is the first index and j is the second index of a possible slot
@@ -73,11 +83,9 @@ ChildrenMatrix.prototype.getMostSuitableSlot = function(newChild) {
   possibleSlots.forEach(slot => {
     let metric = 0;
 
-    const rowNeighbors = this.matrix[slot.i].filter(item => item);
+    const rowNeighbors = this.getSlotRowNeighbors(slot);
 
-    const columnNeighbors = this.matrix.reduce((acc, v) => {
-      return v[slot.j] ? acc.concat(v[slot.j]) : acc;
-    }, []);
+    const columnNeighbors = this.getSlotColumnNeighbors(slot);
 
     rowNeighbors.forEach(rowNeighbor => {
       metric += Math.abs(newChild.globalBounds.y - rowNeighbor.globalBounds.y);
