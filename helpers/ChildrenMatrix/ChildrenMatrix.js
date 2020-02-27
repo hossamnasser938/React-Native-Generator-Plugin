@@ -26,6 +26,21 @@ ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
   }, []);
 };
 
+ChildrenMatrix.prototype.sortChildren = function(children) {
+  const childrenDiameter = children.map(child => {
+    const diameter = Math.sqrt(
+      Math.pow(child.globalBounds.x, 2) + Math.pow(child.globalBounds.y, 2)
+    );
+
+    return { child, diameter };
+  });
+
+  // sort the childrenDiameter array based on diameter
+  childrenDiameter.sort((a, b) => a.diameter - b.diameter);
+
+  return childrenDiameter.map(item => item.child);
+};
+
 ChildrenMatrix.prototype.calculateSlotChildMetric = function(slot, newChild) {
   let metric = 0;
 
