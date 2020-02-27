@@ -12,7 +12,7 @@ function ChildrenMatrix(n) {
   this.matrix = new Array(n).fill(null).map(_ => new Array(n).fill(null));
 }
 
-ChildrenMatrix.prototype.setChild = function(i, j, child) {
+ChildrenMatrix.prototype.setChild = function({ i, j }, child) {
   this.matrix[i][j] = child;
 };
 

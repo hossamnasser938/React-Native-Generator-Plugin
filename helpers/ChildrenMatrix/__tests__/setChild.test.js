@@ -5,7 +5,7 @@ test("test ChildrenMatrix.setChild function", () => {
 
   expect(m.matrix[0][0]).toBeFalsy();
 
-  m.setChild(0, 0, {});
+  m.setChild({ i: 0, j: 0 }, {});
 
   expect(m.matrix[0][0]).not.toBeFalsy();
 });

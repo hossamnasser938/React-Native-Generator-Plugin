@@ -8,7 +8,7 @@ describe("test ChildrenMatrix.getMostSuitableSlot function", () => {
       globalBounds: { x: 100, y: 100, width: 100, height: 100 }
     };
 
-    m.setChild(0, 0, existingChild);
+    m.setChild({ i: 0, j: 0 }, existingChild);
 
     const newChild1 = {
       globalBounds: { x: 100, y: 200, width: 100, height: 100 }
@@ -30,7 +30,7 @@ describe("test ChildrenMatrix.getMostSuitableSlot function", () => {
       globalBounds: { x: 100, y: 100, width: 100, height: 100 }
     };
 
-    m.setChild(0, 0, existingChild1);
+    m.setChild({ i: 0, j: 0 }, existingChild1);
 
     const newChild1 = {
       globalBounds: { x: 100, y: 200, width: 100, height: 100 }
@@ -48,7 +48,7 @@ describe("test ChildrenMatrix.getMostSuitableSlot function", () => {
       globalBounds: { x: 100, y: 300, width: 100, height: 100 }
     };
 
-    m.setChild(1, 0, existingChild2);
+    m.setChild({ i: 1, j: 0 }, existingChild2);
 
     const newChild3 = {
       globalBounds: { x: 300, y: 100, width: 100, height: 100 }
@@ -60,7 +60,7 @@ describe("test ChildrenMatrix.getMostSuitableSlot function", () => {
       globalBounds: { x: 200, y: 300, width: 100, height: 100 }
     };
 
-    m.setChild(1, 1, existingChild3);
+    m.setChild({ i: 1, j: 1 }, existingChild3);
 
     const newChild4 = {
       globalBounds: { x: 200, y: 400, width: 100, height: 100 }
