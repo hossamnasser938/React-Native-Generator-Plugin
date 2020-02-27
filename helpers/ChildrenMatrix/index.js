@@ -3,13 +3,18 @@
  * @param {*} n matrix length
  * @returns an instance of ChildrenMatrix
  */
-function ChildrenMatrix(n) {
-  if (typeof n !== "number" || n < 1) {
-    throw new Error("invalid n passed to ChildrenMatrix constructor function");
+function ChildrenMatrix(children) {
+  if (!Array.isArray(children) || children.length === 0) {
+    throw new Error(
+      "invalid children passed to ChildrenMatrix constructor function. Should be an array of at least one child"
+    );
   }
 
-  this.n = n;
-  this.matrix = new Array(n).fill(null).map(_ => new Array(n).fill(null));
+  this.children = children;
+  this.n = children.length;
+  this.matrix = new Array(this.n)
+    .fill(null)
+    .map(_ => new Array(this.n).fill(null));
 }
 
 ChildrenMatrix.prototype.setChild = function({ i, j }, child) {

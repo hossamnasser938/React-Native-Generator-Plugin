@@ -2,7 +2,7 @@ const { ChildrenMatrix } = require("../index");
 
 describe("test initiating new childdren matrix object", () => {
   test("should initiate children matrix correctly", () => {
-    const fiveDMatrix = new ChildrenMatrix(2);
+    const fiveDMatrix = new ChildrenMatrix([{}, {}]);
     expect(fiveDMatrix.n).toEqual(2);
     expect(fiveDMatrix.matrix).isFalsyMatrix(2);
   });
@@ -26,6 +26,10 @@ describe("test initiating new childdren matrix object", () => {
 
     expect(() => {
       new ChildrenMatrix({});
+    }).toThrow();
+
+    expect(() => {
+      new ChildrenMatrix([]);
     }).toThrow();
   });
 });

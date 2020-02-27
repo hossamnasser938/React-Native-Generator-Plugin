@@ -2,7 +2,7 @@ const { ChildrenMatrix } = require("../index");
 
 describe("test ChildrenMatrix.getPossibleSlots function", () => {
   test("test 1x1 matrix", () => {
-    const m = new ChildrenMatrix(1);
+    const m = new ChildrenMatrix([{}]);
     expect(m.getPossibleSlots()).toEqual([{ i: 0, j: 0 }]);
 
     m.setChild({ i: 0, j: 0 }, {});
@@ -10,7 +10,7 @@ describe("test ChildrenMatrix.getPossibleSlots function", () => {
   });
 
   test("test 2x2 matrix", () => {
-    const m = new ChildrenMatrix(2);
+    const m = new ChildrenMatrix([{}, {}]);
     expect(m.getPossibleSlots()).toEqual([{ i: 0, j: 0 }]);
 
     m.setChild({ i: 0, j: 0 }, {});
@@ -27,7 +27,7 @@ describe("test ChildrenMatrix.getPossibleSlots function", () => {
   });
 
   test("test 3x3 matrix", () => {
-    const m = new ChildrenMatrix(3);
+    const m = new ChildrenMatrix([{}, {}, {}]);
     expect(m.getPossibleSlots()).toEqual([{ i: 0, j: 0 }]);
 
     m.setChild({ i: 0, j: 0 }, {});
