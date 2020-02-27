@@ -1,4 +1,4 @@
-const { ChildrenMatrix } = require("../ChildrenMatrix");
+const { ChildrenMatrix } = require("../index");
 
 test("test ChildrenMatrix.setChild function", () => {
   const m = new ChildrenMatrix(2);

@@ -1,4 +1,4 @@
-const { ChildrenMatrix } = require("../ChildrenMatrix");
+const { ChildrenMatrix } = require("../index");
 describe("test ChildrenMatrix.calculateSlotChildMetric function", () => {
   test("when having row neighbours", () => {
     const m = new ChildrenMatrix(2);

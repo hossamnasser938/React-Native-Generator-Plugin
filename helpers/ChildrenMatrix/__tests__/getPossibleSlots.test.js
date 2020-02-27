@@ -1,4 +1,4 @@
-const { ChildrenMatrix } = require("../ChildrenMatrix");
+const { ChildrenMatrix } = require("../index");
 
 describe("test ChildrenMatrix.getPossibleSlots function", () => {
   test("test 1x1 matrix", () => {
