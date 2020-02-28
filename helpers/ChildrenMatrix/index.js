@@ -31,8 +31,8 @@ ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
   }, []);
 };
 
-ChildrenMatrix.prototype.sortChildren = function(children) {
-  const childrenDiameter = children.map(child => {
+ChildrenMatrix.prototype.sortChildren = function() {
+  const childrenDiameter = this.children.map(child => {
     const diameter = Math.sqrt(
       Math.pow(child.globalBounds.x, 2) + Math.pow(child.globalBounds.y, 2)
     );
@@ -43,7 +43,7 @@ ChildrenMatrix.prototype.sortChildren = function(children) {
   // sort the childrenDiameter array based on diameter
   childrenDiameter.sort((a, b) => a.diameter - b.diameter);
 
-  return childrenDiameter.map(item => item.child);
+  this.children = childrenDiameter.map(item => item.child);
 };
 
 ChildrenMatrix.prototype.calculateSlotChildMetric = function(slot, newChild) {
@@ -133,6 +133,18 @@ ChildrenMatrix.prototype.getMostSuitableSlot = function(newChild) {
   }, slotsMetrics[0]);
 
   return leastMetricSlot.slot;
+};
+
+ChildrenMatrix.prototype.layChildrenInsideMatrix = function() {
+  this.sortChildren();
+
+  this.children.forEach(child => {
+    const suitableSlot = this.getMostSuitableSlot(child);
+
+    this.setChild(suitableSlot, child);
+  });
+
+  return this.matrix;
 };
 
 ChildrenMatrix.prototype.generateCode = function() {

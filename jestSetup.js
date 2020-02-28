@@ -57,3 +57,19 @@ expect.extend({
     }
   }
 });
+
+expect.extend({
+  anyFalsyValue(received) {
+    if (!received) {
+      return {
+        message: () => `expected a truthy value but got a falsy one`,
+        pass: true
+      };
+    }
+
+    return {
+      message: () => `expected a falsy value but got a truthy one`,
+      pass: false
+    };
+  }
+});

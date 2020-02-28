@@ -5,26 +5,33 @@ test("test ChildrenMatrix.sortChildren function", () => {
   const child2 = { globalBounds: { x: 100, y: 200, width: 50, height: 50 } };
   const child3 = { globalBounds: { x: 200, y: 100, width: 50, height: 50 } };
 
-  const m = new ChildrenMatrix([{}, {}]);
+  const children12Matrix = new ChildrenMatrix([child1, child2]);
+  expect(children12Matrix.children).toEqual([child1, child2]);
 
-  expect(m.sortChildren([child1, child2])).toEqual([child1, child2]);
-  expect(m.sortChildren([child2, child1])).toEqual([child1, child2]);
+  children12Matrix.sortChildren();
+  expect(children12Matrix.children).toEqual([child1, child2]);
 
-  const mm = new ChildrenMatrix([{}, {}, {}]);
+  const children21Matrix = new ChildrenMatrix([child2, child1]);
+  expect(children21Matrix.children).toEqual([child2, child1]);
 
-  expect(mm.sortChildren([child1, child2, child3])).toEqual([
-    child1,
-    child2,
-    child3
-  ]);
-  expect(mm.sortChildren([child2, child3, child1])).toEqual([
-    child1,
-    child2,
-    child3
-  ]);
-  expect(mm.sortChildren([child2, child1, child3])).toEqual([
-    child1,
-    child2,
-    child3
-  ]);
+  children21Matrix.sortChildren();
+  expect(children21Matrix.children).toEqual([child1, child2]);
+
+  const children123Matrix = new ChildrenMatrix([child1, child2, child3]);
+  expect(children123Matrix.children).toEqual([child1, child2, child3]);
+
+  const children231Matrix = new ChildrenMatrix([child2, child3, child1]);
+  expect(children231Matrix.children).toEqual([child2, child3, child1]);
+
+  const children213Matrix = new ChildrenMatrix([child2, child1, child3]);
+  expect(children213Matrix.children).toEqual([child2, child1, child3]);
+
+  children123Matrix.sortChildren();
+  expect(children123Matrix.children).toEqual([child1, child2, child3]);
+
+  children231Matrix.sortChildren();
+  expect(children231Matrix.children).toEqual([child1, child2, child3]);
+
+  children213Matrix.sortChildren();
+  expect(children213Matrix.children).toEqual([child1, child2, child3]);
 });
