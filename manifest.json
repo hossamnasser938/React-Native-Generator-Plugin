@@ -19,9 +19,14 @@
   ],
   "uiEntryPoints": [
     {
-      "label": "Generate",
+      "label": "Generate code for entire document",
       "type": "menu",
-      "commandId": "generate"
+      "commandId": "generateCodeForEntireDocument"
+    },
+    {
+      "label": "Generate code for selected component",
+      "type": "menu",
+      "commandId": "generateCodeForSelectedComponent"
     }
   ],
   "version": "0.0.1"

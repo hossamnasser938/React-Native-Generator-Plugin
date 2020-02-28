@@ -10,12 +10,10 @@ const {
 
 /**
  * generates code for container element
- * @param {*} container an instance of SceneNode
+ * @param {*} children an array of children nodes
  * @returns string ui code
  */
-function generateContainerCode(container) {
-  const children = getNodeChildren(container);
-
+function generateContainerCode(children) {
   const childrenMatrix = new ChildrenMatrix(children);
   childrenMatrix.layChildrenInsideMatrix();
 
