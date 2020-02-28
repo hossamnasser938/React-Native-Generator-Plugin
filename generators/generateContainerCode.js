@@ -1,5 +1,12 @@
-const { getNodeChildren } = require("../helpers/getNodeChildren");
+const { getNodeChildren } = require("../helpers/getNodeChildren/index");
 const { ChildrenMatrix } = require("../helpers/ChildrenMatrix/index");
+const { generateLeafNodeCode } = require("./generateLeafNodeCode");
+const {
+  flattenChildrenMatrix,
+  doesChildrenExistInOneColumn,
+  doesChildrenExistInOneRow,
+  getTupleChildrenCount
+} = require("../helpers/ChildrenMatrix/helpers");
 
 /**
  * generates code for container element
@@ -12,41 +19,33 @@ function generateContainerCode(container) {
   const childrenMatrix = new ChildrenMatrix(children);
   childrenMatrix.layChildrenInsideMatrix();
 
-  const printItem = item => `<Item_${item.name} />`;
-
   // check whether children exist in one column
-  const childrenExistInOneColumn = childrenMatrix.matrix.reduce(
-    (acc, tuple) => !!tuple[0] && acc,
-    true
+  const childrenExistInOneColumn = doesChildrenExistInOneColumn(
+    childrenMatrix.matrix
   );
 
   if (childrenExistInOneColumn) {
     return `<View>
-    ${Array(this.n)
-      .fill(1)
-      .map(_ => "<Item />")}
+    ${flattenChildrenMatrix(childrenMatrix.matrix).map(child =>
+      generateLeafNodeCode(child)
+    )}
 </View>`;
   }
 
   // check whether children exist in one row
-  const childrenExistInOneRow = childrenMatrix.matrix[0].reduce(
-    (acc, v) => !!v && acc,
-    true
+  const childrenExistInOneRow = doesChildrenExistInOneRow(
+    childrenMatrix.matrix
   );
 
   if (childrenExistInOneRow) {
     return `<View style={{flexDirection: 'row'}}>
-    ${Array(this.n)
-      .fill(1)
-      .map(_ => "<Item />")}
+    ${flattenChildrenMatrix(childrenMatrix.matrix).map(child =>
+      generateLeafNodeCode(child)
+    )}
 </View>`;
   }
 
   // children are dispersed
-  const getTupleChildrenCount = function(tuple) {
-    return tuple.reduce((acc, v) => (!!v ? acc + 1 : acc), 0);
-  };
-
   return `<View>
   ${childrenMatrix.matrix.map(tuple => {
     const childrenCount = getTupleChildrenCount(tuple);
@@ -54,7 +53,7 @@ function generateContainerCode(container) {
     return (
       childrenCount &&
       `<View ${childrenCount > 1 ? "style={{flexDirection: 'row'}}" : ""}>
-    ${tuple.map(child => child && printItem(child))}
+    ${tuple.map(child => child && generateLeafNodeCode(child))}
   </View>\n`
     );
   })}
