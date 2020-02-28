@@ -1,4 +1,4 @@
-function generateSymbolInstanceCode(polygon) {
+function generateSymbolInstanceCode(symbolInstance) {
   return `<SymbolInstance />\n`;
 }
 

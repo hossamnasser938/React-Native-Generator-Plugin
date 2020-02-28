@@ -1,4 +1,3 @@
-const { getNodeChildren } = require("../helpers/getNodeChildren/index");
 const { ChildrenMatrix } = require("../helpers/ChildrenMatrix/index");
 const { generateNodeCode } = require("./generateNodeCode");
 const {

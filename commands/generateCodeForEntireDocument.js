@@ -1,13 +1,9 @@
-const { generateNodeCode } = require("../generators/generateNodeCode");
+const { generateArtboardCode } = require("../generators/generateArtboardCode");
 
 async function generateCodeForEntireDocument(selection, documentRoot) {
   documentRoot.children.forEach(documentItem => {
     if (documentItem.constructor.name === "Artboard") {
-      let code = `{/* <Screen ${documentItem.name}> */}\n`;
-      code += generateNodeCode(documentItem);
-      code += `{/* </Screen ${documentItem.name}> */}\n\n`;
-
-      console.log(code);
+      console.log(generateArtboardCode(documentItem));
     }
   });
 }

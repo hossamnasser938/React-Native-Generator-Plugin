@@ -1,4 +1,4 @@
-function generateGroupCode(polygon) {
+function generateGroupCode(group) {
   return `<Group />\n`;
 }
 

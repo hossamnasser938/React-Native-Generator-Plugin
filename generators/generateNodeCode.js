@@ -1,10 +1,10 @@
 const { generateArtboardCode } = require("./generateArtboardCode");
 const { generateRectangleCode } = require("./generateRectangleCode");
 const { generateEllipseCode } = require("./generateEllipseCode");
-const { generatePolygonCode } = require("./generatePathCode");
+const { generatePolygonCode } = require("./generatePolygonCode");
 const { generateLineCode } = require("./generateLineCode");
 const { generatePathCode } = require("./generatePathCode");
-const { generateBooleanGroupCode } = require("./generatePathCode");
+const { generateBooleanGroupCode } = require("./generateBooleanGroupCode");
 const { generateTextCode } = require("./generateTextCode/index");
 const { generateGroupCode } = require("./generateGroupCode");
 const { generateSymbolInstanceCode } = require("./generateSymbolInstanceCode");

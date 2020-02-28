@@ -1,4 +1,4 @@
-function generateLinkedGraphicCode(polygon) {
+function generateLinkedGraphicCode(linkedGraphic) {
   return `<LinkedGraphic />\n`;
 }
 

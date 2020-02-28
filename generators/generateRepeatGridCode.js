@@ -1,4 +1,4 @@
-function generateRepeatGridCode(polygon) {
+function generateRepeatGridCode(repeatGrid) {
   return `<RepeatGrid />\n`;
 }
 
