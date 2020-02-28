@@ -1,6 +1,6 @@
 const { getNodeChildren } = require("../helpers/getNodeChildren/index");
 const { ChildrenMatrix } = require("../helpers/ChildrenMatrix/index");
-const { generateLeafNodeCode } = require("./generateLeafNodeCode");
+const { generateNodeCode } = require("./generateNodeCode");
 const {
   flattenChildrenMatrix,
   doesChildrenExistInOneColumn,
@@ -27,7 +27,7 @@ function generateContainerCode(container) {
   if (childrenExistInOneColumn) {
     return `<View>
     ${flattenChildrenMatrix(childrenMatrix.matrix).map(child =>
-      generateLeafNodeCode(child)
+      generateNodeCode(child)
     )}
 </View>`;
   }
@@ -40,7 +40,7 @@ function generateContainerCode(container) {
   if (childrenExistInOneRow) {
     return `<View style={{flexDirection: 'row'}}>
     ${flattenChildrenMatrix(childrenMatrix.matrix).map(child =>
-      generateLeafNodeCode(child)
+      generateNodeCode(child)
     )}
 </View>`;
   }
@@ -53,7 +53,7 @@ function generateContainerCode(container) {
     return (
       childrenCount &&
       `<View ${childrenCount > 1 ? "style={{flexDirection: 'row'}}" : ""}>
-    ${tuple.map(child => child && generateLeafNodeCode(child))}
+    ${tuple.map(child => child && generateNodeCode(child))}
   </View>\n`
     );
   })}
