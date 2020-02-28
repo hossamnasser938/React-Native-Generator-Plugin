@@ -1,5 +1,5 @@
 const { getNodeChildren } = require("../helpers/getNodeChildren");
-const { generateLeafNodeCode } = require("./generateLeafNodeCode");
+const { ChildrenMatrix } = require("../helpers/ChildrenMatrix/index");
 
 /**
  * generates code for container element
@@ -8,64 +8,57 @@ const { generateLeafNodeCode } = require("./generateLeafNodeCode");
  */
 function generateContainerCode(container) {
   const children = getNodeChildren(container);
-  let childrenCode = "";
 
-  let style = {};
+  const childrenMatrix = new ChildrenMatrix(children);
+  childrenMatrix.layChildrenInsideMatrix();
 
-  const n = children.length;
+  const printItem = item => `<Item_${item.name} />`;
 
-  if (n === 1) {
-    childrenCode = generateLeafNodeCode(children[0]);
-  } else {
-    let childrenMatrix = new Array(n).fill(0).map(_ => new Array(n).fill(0));
+  // check whether children exist in one column
+  const childrenExistInOneColumn = childrenMatrix.matrix.reduce(
+    (acc, tuple) => !!tuple[0] && acc,
+    true
+  );
 
-    childrenMatrix[0][0] = children[0];
-
-    if (
-      Math.abs(children[1].globalBounds.x - children[0].globalBounds.x) <
-      Math.abs(children[1].globalBounds.y - children[0].globalBounds.y)
-    ) {
-      // close X values -> more likely exist in one column
-      childrenMatrix[1][0] = children[1];
-
-      // assure that each one exists in its correct place relative to the other
-      if (
-        childrenMatrix[0][0].globalBounds.y >
-        childrenMatrix[1][0].globalBounds.y
-      ) {
-        const temp = childrenMatrix[0][0];
-        childrenMatrix[0][0] = childrenMatrix[1][0];
-        childrenMatrix[1][0] = temp;
-      }
-
-      childrenCode += generateLeafNodeCode(childrenMatrix[0][0]);
-      childrenCode += generateLeafNodeCode(childrenMatrix[1][0]);
-    } else {
-      // close Y values -> more likely exist in one row
-      childrenMatrix[0][1] = children[1];
-
-      // assure that each one exists in its correct place relative to the other
-      if (
-        childrenMatrix[0][0].globalBounds.x >
-        childrenMatrix[0][1].globalBounds.x
-      ) {
-        const temp = childrenMatrix[0][0];
-        childrenMatrix[0][0] = childrenMatrix[0][1];
-        childrenMatrix[0][1] = temp;
-      }
-
-      childrenCode += generateLeafNodeCode(childrenMatrix[0][0]);
-      childrenCode += generateLeafNodeCode(childrenMatrix[0][1]);
-
-      style.flexDirection = "row";
-    }
+  if (childrenExistInOneColumn) {
+    return `<View>
+    ${Array(this.n)
+      .fill(1)
+      .map(_ => "<Item />")}
+</View>`;
   }
 
-  let code = `<View style={${JSON.stringify(style)}}>
-  ${childrenCode}
-</View>\n`;
+  // check whether children exist in one row
+  const childrenExistInOneRow = childrenMatrix.matrix[0].reduce(
+    (acc, v) => !!v && acc,
+    true
+  );
 
-  return code;
+  if (childrenExistInOneRow) {
+    return `<View style={{flexDirection: 'row'}}>
+    ${Array(this.n)
+      .fill(1)
+      .map(_ => "<Item />")}
+</View>`;
+  }
+
+  // children are dispersed
+  const getTupleChildrenCount = function(tuple) {
+    return tuple.reduce((acc, v) => (!!v ? acc + 1 : acc), 0);
+  };
+
+  return `<View>
+  ${childrenMatrix.matrix.map(tuple => {
+    const childrenCount = getTupleChildrenCount(tuple);
+
+    return (
+      childrenCount &&
+      `<View ${childrenCount > 1 ? "style={{flexDirection: 'row'}}" : ""}>
+    ${tuple.map(child => child && printItem(child))}
+  </View>\n`
+    );
+  })}
+</View>`;
 }
 
 module.exports = {
