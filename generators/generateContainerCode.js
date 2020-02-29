@@ -23,14 +23,20 @@ function generateContainerCode(children, additionalStyle) {
     childrenMatrix.matrix
   );
 
+  let code = "";
+
   if (childrenExistInOneColumn) {
-    return `<View${
-      additionalStyle ? `style={${JSON.stringify(additionalStyle)}}` : ""
-    }>
-    ${flattenChildrenMatrix(childrenMatrix.matrix).map(child =>
-      generateNodeCode(child)
-    )}
-</View>`;
+    code += `<View${
+      additionalStyle ? ` style={${JSON.stringify(additionalStyle)}}` : ""
+    }>\n`;
+
+    flattenChildrenMatrix(childrenMatrix.matrix).forEach(child => {
+      code += generateNodeCode(child);
+    });
+
+    code += `</View>\n`;
+
+    return code;
   }
 
   // check whether children exist in one row
@@ -41,28 +47,37 @@ function generateContainerCode(children, additionalStyle) {
   if (childrenExistInOneRow) {
     const style = { flexDirection: "row", ...additionalStyle };
 
-    return `<View style={${JSON.stringify(style)}}>
-    ${flattenChildrenMatrix(childrenMatrix.matrix).map(child =>
-      generateNodeCode(child)
-    )}
-</View>`;
+    code += `<View style={${JSON.stringify(style)}}>\n`;
+
+    flattenChildrenMatrix(childrenMatrix.matrix).forEach(child => {
+      code += generateNodeCode(child);
+    });
+
+    code += `</View>\n`;
+
+    return code;
   }
 
   // children are dispersed
-  return `<View${
-    additionalStyle ? `style={${JSON.stringify(additionalStyle)}}` : ""
-  }>
-  ${childrenMatrix.matrix.map(tuple => {
+  code += `<View${
+    additionalStyle ? ` style={${JSON.stringify(additionalStyle)}}` : ""
+  }>\n`;
+
+  childrenMatrix.matrix.map(tuple => {
     const childrenCount = getTupleChildrenCount(tuple);
 
-    return (
-      childrenCount &&
-      `<View ${childrenCount > 1 ? "style={{flexDirection: 'row'}}" : ""}>
-    ${tuple.map(child => child && generateNodeCode(child))}
-  </View>\n`
-    );
-  })}
-</View>`;
+    if (childrenCount) {
+      code += `<View ${
+        childrenCount > 1 ? "style={{flexDirection: 'row'}}" : ""
+      }>
+      ${tuple.map(child => child && generateNodeCode(child))}
+    </View>\n`;
+    }
+  });
+
+  code += `</View>\n`;
+
+  return code;
 }
 
 module.exports = {
