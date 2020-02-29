@@ -1,4 +1,6 @@
 const { generateGraphicNodeStyles } = require("./generateGraphicNodeStyles");
+const { generateContainerCode } = require("./generateContainerCode");
+const { getNodeChildren } = require("../helpers/getNodeChildren/index");
 const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
@@ -32,6 +34,12 @@ function generateRectangleCode(rectangle) {
       style.borderBottomEndRadius = pixelUnitPreprocessor(bottomRight);
       style.borderBottomStartRadius = pixelUnitPreprocessor(bottomLeft);
     }
+  }
+
+  const children = getNodeChildren(rectangle);
+
+  if (children.length) {
+    return generateContainerCode(children, style);
   }
 
   return `<View style={${JSON.stringify(style)}}/>\n`;

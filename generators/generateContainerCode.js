@@ -1,5 +1,4 @@
 const { ChildrenMatrix } = require("../helpers/ChildrenMatrix/index");
-const { generateNodeCode } = require("./generateNodeCode");
 const {
   flattenChildrenMatrix,
   doesChildrenExistInOneColumn,
@@ -10,9 +9,12 @@ const {
 /**
  * generates code for container element
  * @param {*} children an array of children nodes
+ * @param {*} additionalStyle a style object coming from Rectangle or Ellipse
  * @returns string ui code
  */
-function generateContainerCode(children) {
+function generateContainerCode(children, additionalStyle) {
+  const { generateNodeCode } = require("./generateNodeCode"); // Late require for fixing circular dependency
+
   const childrenMatrix = new ChildrenMatrix(children);
   childrenMatrix.layChildrenInsideMatrix();
 
@@ -22,7 +24,9 @@ function generateContainerCode(children) {
   );
 
   if (childrenExistInOneColumn) {
-    return `<View>
+    return `<View${
+      additionalStyle ? `style={${JSON.stringify(additionalStyle)}}` : ""
+    }>
     ${flattenChildrenMatrix(childrenMatrix.matrix).map(child =>
       generateNodeCode(child)
     )}
@@ -35,7 +39,9 @@ function generateContainerCode(children) {
   );
 
   if (childrenExistInOneRow) {
-    return `<View style={{flexDirection: 'row'}}>
+    const style = { flexDirection: "row", ...additionalStyle };
+
+    return `<View style={${JSON.stringify(style)}}>
     ${flattenChildrenMatrix(childrenMatrix.matrix).map(child =>
       generateNodeCode(child)
     )}
@@ -43,7 +49,9 @@ function generateContainerCode(children) {
   }
 
   // children are dispersed
-  return `<View>
+  return `<View${
+    additionalStyle ? `style={${JSON.stringify(additionalStyle)}}` : ""
+  }>
   ${childrenMatrix.matrix.map(tuple => {
     const childrenCount = getTupleChildrenCount(tuple);
 

@@ -1,4 +1,6 @@
 const { generateGraphicNodeStyles } = require("./generateGraphicNodeStyles");
+const { generateContainerCode } = require("./generateContainerCode");
+const { getNodeChildren } = require("../helpers/getNodeChildren/index");
 const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
@@ -29,6 +31,12 @@ function generateEllipseCode(ellipse) {
       style.borderRadius = radiusX;
       style.transform = [{ scaleY: radiusY / radiusX }];
     }
+  }
+
+  const children = getNodeChildren(ellipse);
+
+  if (children.length) {
+    return generateContainerCode(children, style);
   }
 
   return `<View style={${JSON.stringify(style)}}/>\n`;
