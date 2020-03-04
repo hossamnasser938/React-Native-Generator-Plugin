@@ -15,10 +15,10 @@ function isNodeChildForContainer(node, container) {
 
   if (
     node.guid !== container.guid &&
-    nodeX >= containerX &&
-    nodeX <= containerX + containerWidth &&
-    nodeY >= containerY &&
-    nodeY <= containerY + containerHeight
+    nodeX > containerX &&
+    nodeX < containerX + containerWidth &&
+    nodeY > containerY &&
+    nodeY < containerY + containerHeight
   ) {
     return true;
   }
