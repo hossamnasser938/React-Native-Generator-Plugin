@@ -1,9 +1,9 @@
 const { ChildrenMatrix } = require("../index");
 
 test("test ChildrenMatrix.sortChildren function", () => {
-  const child1 = { globalBounds: { x: 100, y: 100, width: 50, height: 50 } };
-  const child2 = { globalBounds: { x: 100, y: 200, width: 50, height: 50 } };
-  const child3 = { globalBounds: { x: 200, y: 100, width: 50, height: 50 } };
+  const child1 = { boundsInParent: { x: 100, y: 100, width: 50, height: 50 } };
+  const child2 = { boundsInParent: { x: 100, y: 200, width: 50, height: 50 } };
+  const child3 = { boundsInParent: { x: 200, y: 100, width: 50, height: 50 } };
 
   const children12Matrix = new ChildrenMatrix([child1, child2]);
   expect(children12Matrix.children).toEqual([child1, child2]);

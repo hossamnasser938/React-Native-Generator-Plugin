@@ -69,7 +69,7 @@ ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
 ChildrenMatrix.prototype.sortChildren = function() {
   const childrenDiameter = this.children.map(child => {
     const diameter = Math.sqrt(
-      Math.pow(child.globalBounds.x, 2) + Math.pow(child.globalBounds.y, 2)
+      Math.pow(child.boundsInParent.x, 2) + Math.pow(child.boundsInParent.y, 2)
     );
 
     return { child, diameter };
@@ -95,11 +95,15 @@ ChildrenMatrix.prototype.calculateSlotChildMetric = function(slot, newChild) {
   const columnNeighbors = this.getSlotColumnNeighbors(slot);
 
   rowNeighbors.forEach(rowNeighbor => {
-    metric += Math.abs(newChild.globalBounds.y - rowNeighbor.globalBounds.y);
+    metric += Math.abs(
+      newChild.boundsInParent.y - rowNeighbor.boundsInParent.y
+    );
   });
 
   columnNeighbors.forEach(columnNeighbor => {
-    metric += Math.abs(newChild.globalBounds.x - columnNeighbor.globalBounds.x);
+    metric += Math.abs(
+      newChild.boundsInParent.x - columnNeighbor.boundsInParent.x
+    );
   });
 
   return metric;

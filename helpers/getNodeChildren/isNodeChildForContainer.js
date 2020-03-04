@@ -5,13 +5,13 @@
  * @returns true if node exists and false if not
  */
 function isNodeChildForContainer(node, container) {
-  const nodeX = node.globalBounds.x;
-  const nodeY = node.globalBounds.y;
+  const nodeX = node.boundsInParent.x;
+  const nodeY = node.boundsInParent.y;
 
-  const containerX = container.globalBounds.x;
-  const containerY = container.globalBounds.y;
-  const containerWidth = container.globalBounds.width;
-  const containerHeight = container.globalBounds.height;
+  const containerX = container.boundsInParent.x;
+  const containerY = container.boundsInParent.y;
+  const containerWidth = container.boundsInParent.width;
+  const containerHeight = container.boundsInParent.height;
 
   if (
     node.guid !== container.guid &&

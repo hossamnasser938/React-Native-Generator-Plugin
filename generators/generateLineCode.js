@@ -12,18 +12,25 @@ function generateLineCode(line) {
 
   const style = {};
 
-  const { start, end, strokeEnabled, stroke, strokeWidth, globalBounds } = line;
+  const {
+    start,
+    end,
+    strokeEnabled,
+    stroke,
+    strokeWidth,
+    boundsInParent
+  } = line;
 
   if (strokeEnabled) {
     style.backgroundColor = stroke.toHex(true);
 
     if (start.x !== end.x) {
       // horizontal
-      style.width = pixelUnitPreprocessor(globalBounds.width);
+      style.width = pixelUnitPreprocessor(boundsInParent.width);
       style.height = pixelUnitPreprocessor(strokeWidth);
     } else {
       // vertical
-      style.height = pixelUnitPreprocessor(globalBounds.height);
+      style.height = pixelUnitPreprocessor(boundsInParent.height);
       style.width = pixelUnitPreprocessor(strokeWidth);
     }
   }

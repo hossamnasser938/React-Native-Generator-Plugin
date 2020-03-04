@@ -1,11 +1,11 @@
 const { ChildrenMatrix } = require("../index");
 
-const child1 = { globalBounds: { x: 100, y: 100, width: 50, height: 50 } };
-const child2 = { globalBounds: { x: 200, y: 100, width: 50, height: 50 } };
-const child3 = { globalBounds: { x: 300, y: 100, width: 50, height: 50 } };
-const child4 = { globalBounds: { x: 100, y: 200, width: 50, height: 50 } };
-const child5 = { globalBounds: { x: 200, y: 200, width: 50, height: 50 } };
-const child6 = { globalBounds: { x: 100, y: 300, width: 50, height: 50 } };
+const child1 = { boundsInParent: { x: 100, y: 100, width: 50, height: 50 } };
+const child2 = { boundsInParent: { x: 200, y: 100, width: 50, height: 50 } };
+const child3 = { boundsInParent: { x: 300, y: 100, width: 50, height: 50 } };
+const child4 = { boundsInParent: { x: 100, y: 200, width: 50, height: 50 } };
+const child5 = { boundsInParent: { x: 200, y: 200, width: 50, height: 50 } };
+const child6 = { boundsInParent: { x: 100, y: 300, width: 50, height: 50 } };
 
 describe("test ChildrenMatrix.layChildrenInsideMatrix function", () => {
   test("test 2 children", () => {
