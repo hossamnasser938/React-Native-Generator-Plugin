@@ -39,7 +39,7 @@ function generateRectangleCode(rectangle) {
   const children = getNodeChildren(rectangle);
 
   if (children.length) {
-    return generateContainerCode(children, style);
+    return generateContainerCode(rectangle, children, style);
   }
 
   return `<View style={${JSON.stringify(style)}}/>\n`;

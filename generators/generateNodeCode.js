@@ -11,7 +11,16 @@ const { generateSymbolInstanceCode } = require("./generateSymbolInstanceCode");
 const { generateRepeatGridCode } = require("./generateRepeatGridCode");
 const { generateLinkedGraphicCode } = require("./generateLinkedGraphicCode");
 
-function generateNodeCode(node) {
+const {
+  isTraversing,
+  pushChildParentPair
+} = require("../helpers/childrenDirectParents/index");
+
+function generateNodeCode(node, container) {
+  if (isTraversing()) {
+    pushChildParentPair(node.guid, container && container.guid);
+  }
+
   switch (node.constructor.name) {
     case "Artboard":
       return generateArtboardCode(node);

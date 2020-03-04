@@ -4,6 +4,10 @@
  * @returns an instance of Artboard or null
  */
 function getNodeArtboard(node) {
+  if (node.constructor.name === "Artboard") {
+    return node;
+  }
+
   let parent = node.parent;
 
   while (parent && parent.constructor.name !== "Artboard") {

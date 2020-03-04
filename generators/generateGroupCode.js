@@ -6,7 +6,7 @@ function generateGroupCode(group) {
 
   const nodesInBounds = getNodeChildren(group);
 
-  return generateContainerCode([...groupChildren, ...nodesInBounds]);
+  return generateContainerCode(group, [...groupChildren, ...nodesInBounds]);
 }
 
 module.exports = {

@@ -12,7 +12,7 @@ const {
  * @param {*} additionalStyle a style object coming from Rectangle or Ellipse
  * @returns string ui code
  */
-function generateContainerCode(children, additionalStyle) {
+function generateContainerCode(parent, children, additionalStyle) {
   const { generateNodeCode } = require("./generateNodeCode"); // Late require for fixing circular dependency
 
   const childrenMatrix = new ChildrenMatrix(children);
@@ -31,7 +31,7 @@ function generateContainerCode(children, additionalStyle) {
     }>\n`;
 
     flattenChildrenMatrix(childrenMatrix.matrix).forEach(child => {
-      code += generateNodeCode(child);
+      code += generateNodeCode(child, parent);
     });
 
     code += `</View>\n`;
@@ -50,7 +50,7 @@ function generateContainerCode(children, additionalStyle) {
     code += `<View style={${JSON.stringify(style)}}>\n`;
 
     flattenChildrenMatrix(childrenMatrix.matrix).forEach(child => {
-      code += generateNodeCode(child);
+      code += generateNodeCode(child, parent);
     });
 
     code += `</View>\n`;
@@ -70,7 +70,7 @@ function generateContainerCode(children, additionalStyle) {
       code += `<View ${
         childrenCount > 1 ? "style={{flexDirection: 'row'}}" : ""
       }>
-      ${tuple.map(child => child && generateNodeCode(child))}
+      ${tuple.map(child => child && generateNodeCode(child, parent))}
     </View>\n`;
     }
   });

@@ -36,7 +36,7 @@ function generateEllipseCode(ellipse) {
   const children = getNodeChildren(ellipse);
 
   if (children.length) {
-    return generateContainerCode(children, style);
+    return generateContainerCode(ellipse, children, style);
   }
 
   return `<View style={${JSON.stringify(style)}}/>\n`;

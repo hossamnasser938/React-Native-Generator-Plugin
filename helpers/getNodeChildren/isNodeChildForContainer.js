@@ -8,8 +8,13 @@ function isNodeChildForContainer(node, container) {
   const nodeX = node.boundsInParent.x;
   const nodeY = node.boundsInParent.y;
 
-  const containerX = container.boundsInParent.x;
-  const containerY = container.boundsInParent.y;
+  let containerX = 0;
+  let containerY = 0;
+  if (container.constructor.name !== "Artboard") {
+    containerX = container.boundsInParent.x;
+    containerY = container.boundsInParent.y;
+  }
+
   const containerWidth = container.boundsInParent.width;
   const containerHeight = container.boundsInParent.height;
 
