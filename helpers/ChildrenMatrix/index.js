@@ -189,30 +189,34 @@ ChildrenMatrix.prototype.getMostSuitableSlot = function(newChild) {
   return leastMetricSlot.slot;
 };
 
+/**
+ * determines the nodes that should be duplicated in multiple slots when the row of node structure is not enough
+ * @returns an array of nodes
+ */
 ChildrenMatrix.prototype.getNodesToBeDuplicated = function() {
-  const detectedNodes = [];
+  const toBeDuplicatedNodes = [];
 
   this.matrix.forEach((tuple, i) => {
     tuple.forEach((node, j) => {
       if (
         node && // not empty slot
         this.matrix[i + 1] && // not last tuple in the matrix
-        getTupleChildrenCount(this.matrix[i + 1]) && // next tuple hase nodes
+        getTupleChildrenCount(this.matrix[i + 1]) && // next tuple has nodes
         !this.matrix[i + 1][j] && // the bottom neighbor is an empty slot
+        // check if any node in the next row lies within the height of this node
         this.getSlotRowNeighbors({ i: i + 1, j }).find(
           item =>
-            // check if any node withing this row lies within the height of the detected node
             item.boundsInParent.y >= node.boundsInParent.y &&
             item.boundsInParent.y <=
               node.boundsInParent.y + node.boundsInParent.height
         )
       ) {
-        detectedNodes.push({ node, slot: { i, j } });
+        toBeDuplicatedNodes.push({ node, slot: { i, j } });
       }
     });
   });
 
-  return detectedNodes;
+  return toBeDuplicatedNodes;
 };
 
 /**
@@ -228,15 +232,14 @@ ChildrenMatrix.prototype.layChildrenInsideMatrix = function() {
     this.setChild(suitableSlot, child);
   });
 
-  // detect nodes
-  let detectedNodes = this.getNodesToBeDuplicated();
+  let toBeDuplicatedNodes = this.getNodesToBeDuplicated();
 
-  while (detectedNodes.length) {
-    detectedNodes.forEach(({ node, slot }) => {
+  while (toBeDuplicatedNodes.length) {
+    toBeDuplicatedNodes.forEach(({ node, slot }) => {
       this.setChild({ i: slot.i + 1, j: slot.j }, node);
     });
 
-    detectedNodes = this.getNodesToBeDuplicated();
+    toBeDuplicatedNodes = this.getNodesToBeDuplicated();
   }
 
   return this.matrix;
