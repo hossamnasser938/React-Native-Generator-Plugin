@@ -129,4 +129,58 @@ describe("test ChildrenMatrix.layChildrenInsideMatrix function", () => {
     expect(children4215Matrix.layChildrenInsideMatrix()).toEqual(expected);
     expect(children5214Matrix.layChildrenInsideMatrix()).toEqual(expected);
   });
+
+  test("should duplicate children", () => {
+    const childToBeDuplicated = {
+      boundsInParent: { x: 150, y: 100, width: 100, height: 200 }
+    };
+
+    const m = new ChildrenMatrix([
+      child1,
+      child2,
+      childToBeDuplicated,
+      child4,
+      child5
+    ]);
+
+    const expected = [
+      [
+        child1,
+        childToBeDuplicated,
+        child2,
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue()
+      ],
+      [
+        child4,
+        childToBeDuplicated,
+        child5,
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue()
+      ],
+      [
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue()
+      ],
+      [
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue()
+      ],
+      [
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue(),
+        expect.anyFalsyValue()
+      ]
+    ];
+
+    expect(m.layChildrenInsideMatrix()).toEqual(expected);
+  });
 });
