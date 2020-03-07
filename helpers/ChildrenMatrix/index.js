@@ -254,10 +254,8 @@ ChildrenMatrix.prototype.getToBeMergedRowsCount = function(targetSlot) {
     }, 1);
 };
 
-ChildrenMatrix.prototype.rearrangeMatrix = function(
-  targetSlot,
-  toBeMergedRowsCount
-) {
+ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
+  const toBeMergedRowsCount = this.getToBeMergedRowsCount(targetSlot);
   const toBeMergedRows = [targetSlot.i];
 
   for (let iterator = 1; iterator < toBeMergedRowsCount; iterator++) {
@@ -425,9 +423,7 @@ ChildrenMatrix.prototype.layChildrenInsideMatrix = function() {
 
   let tSlot = this.checkTheCase();
   while (tSlot) {
-    const toBeMergedRowsCount = this.getToBeMergedRowsCount(tSlot);
-
-    this.rearrangeMatrix(tSlot, toBeMergedRowsCount);
+    this.rearrangeMatrix(tSlot);
 
     tSlot = this.checkTheCase();
   }
