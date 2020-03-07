@@ -66,7 +66,7 @@ ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
  * gets all children in a 1-D array
  * @returns an array of nodes
  */
-ChildrenMatrix.prototype.flattenChildrenMatrix = function() {
+ChildrenMatrix.prototype.flatten = function() {
   const flattenedArray = [];
 
   this.matrix.forEach(row => {

@@ -23,7 +23,7 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
       additionalStyle ? ` style={${JSON.stringify(additionalStyle)}}` : ""
     }>\n`;
 
-    childrenMatrix.flattenChildrenMatrix().forEach(child => {
+    childrenMatrix.flatten().forEach(child => {
       code += generateNodeCode(child, parent);
     });
 
@@ -40,7 +40,7 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
 
     code += `<View style={${JSON.stringify(style)}}>\n`;
 
-    childrenMatrix.flattenChildrenMatrix().forEach(child => {
+    childrenMatrix.flatten().forEach(child => {
       code += generateNodeCode(child, parent);
     });
 
