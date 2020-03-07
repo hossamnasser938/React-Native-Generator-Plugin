@@ -7,7 +7,7 @@ const child4 = { guid: "child4" };
 const child5 = { guid: "child5" };
 const child6 = { guid: "child6" };
 
-test("test ChildrenMatrix.getRowActualChildrenCount function", () => {
+test("test ChildrenMatrix.getColumnNodes function", () => {
   const m = new ChildrenMatrix([
     child1,
     child2,
@@ -24,10 +24,10 @@ test("test ChildrenMatrix.getRowActualChildrenCount function", () => {
   m.setChild({ i: 2, j: 1 }, child5);
   m.setChild({ i: 2, j: 2 }, child6);
 
-  expect(m.getRowActualChildrenCount(0)).toBe(1);
-  expect(m.getRowActualChildrenCount(1)).toBe(2);
-  expect(m.getRowActualChildrenCount(2)).toBe(3);
-  expect(m.getRowActualChildrenCount(3)).toBe(0);
-  expect(m.getRowActualChildrenCount(4)).toBe(0);
-  expect(m.getRowActualChildrenCount(5)).toBe(0);
+  expect(m.getColumnNodes(0)).toEqual([child1, child2, child4]);
+  expect(m.getColumnNodes(1)).toEqual([child3, child5]);
+  expect(m.getColumnNodes(2)).toEqual([child6]);
+  expect(m.getColumnNodes(3)).toEqual([]);
+  expect(m.getColumnNodes(4)).toEqual([]);
+  expect(m.getColumnNodes(5)).toEqual([]);
 });
