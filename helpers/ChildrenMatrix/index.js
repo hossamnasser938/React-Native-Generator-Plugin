@@ -57,8 +57,8 @@ ChildrenMatrix.prototype.getSlotRowNeighbors = function({ i, j }) {
  * @returns an array of nodes
  */
 ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
-  return this.matrix.reduce((acc, tuple, index) => {
-    return index !== i && tuple[j] ? acc.concat(tuple[j]) : acc;
+  return this.matrix.reduce((acc, row, index) => {
+    return index !== i && row[j] ? acc.concat(row[j]) : acc;
   }, []);
 };
 
@@ -176,8 +176,8 @@ ChildrenMatrix.prototype.getPossibleSlots = function() {
   let containsAtLeastOneChild = false;
   const possibleSlots = [];
 
-  this.matrix.forEach((tuple, rowIndex) => {
-    tuple.forEach((slot, columnIndex) => {
+  this.matrix.forEach((row, rowIndex) => {
+    row.forEach((slot, columnIndex) => {
       if (slot) {
         containsAtLeastOneChild = true;
         // slot contains a node so check its neighbours
@@ -251,12 +251,12 @@ ChildrenMatrix.prototype.getMostSuitableSlot = function(newChild) {
 ChildrenMatrix.prototype.getNodesToBeDuplicated = function() {
   const toBeDuplicatedNodes = [];
 
-  this.matrix.forEach((tuple, i) => {
-    tuple.forEach((node, j) => {
+  this.matrix.forEach((row, i) => {
+    row.forEach((node, j) => {
       if (
         node && // not empty slot
-        this.matrix[i + 1] && // not last tuple in the matrix
-        this.getRowActualChildrenCount(i + 1) && // next tuple has nodes
+        this.matrix[i + 1] && // not last row in the matrix
+        this.getRowActualChildrenCount(i + 1) && // next row has nodes
         !this.matrix[i + 1][j] && // the bottom neighbor is an empty slot
         // check if any node in the next row lies within the height of this node
         this.getSlotRowNeighbors({ i: i + 1, j }).find(
@@ -347,8 +347,8 @@ ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
   let therIsLeftNodes = false;
   let thereIsRightNodes = false;
 
-  this.matrix.forEach((tuple, i) => {
-    tuple.forEach((node, j) => {
+  this.matrix.forEach((row, i) => {
+    row.forEach((node, j) => {
       if (node && toBeMergedRowsIndices.includes(i)) {
         if (j > targetSlot.j) {
           thereIsRightNodes = true;
@@ -373,9 +373,9 @@ ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
   const newChildrenMatrix = new ChildrenMatrix(children);
 
   // set not affected nodes
-  this.matrix.forEach((tuple, i) => {
+  this.matrix.forEach((row, i) => {
     if (!toBeMergedRowsIndices.includes(i)) {
-      tuple.forEach((node, j) => {
+      row.forEach((node, j) => {
         if (node) {
           if (i > targetSlot.i + toBeMergedRowsCount - 1) {
             newChildrenMatrix.setChild(
@@ -400,9 +400,9 @@ ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
   if (therIsLeftNodes) {
     const leftItems = [];
 
-    this.matrix.forEach((tuple, i) => {
+    this.matrix.forEach((row, i) => {
       if (toBeMergedRowsIndices.includes(i)) {
-        tuple.forEach((node, j) => {
+        row.forEach((node, j) => {
           if (node && j < targetSlot.j) {
             leftItems.push({ node, slot: { i, j } });
           }
@@ -432,9 +432,9 @@ ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
   if (thereIsRightNodes) {
     const rightItems = [];
 
-    this.matrix.forEach((tuple, i) => {
+    this.matrix.forEach((row, i) => {
       if (toBeMergedRowsIndices.includes(i)) {
-        tuple.forEach((node, j) => {
+        row.forEach((node, j) => {
           if (node && j > targetSlot.j) {
             rightItems.push({ node, slot: { i, j } });
           }
