@@ -24,9 +24,16 @@ function getTupleChildrenCount(tuple) {
   return tuple.reduce((acc, v) => (!!v ? acc + 1 : acc), 0);
 }
 
+function getColumnNodes(matrix, columnIndex) {
+  return matrix.reduce((acc, tuple) => {
+    return tuple[columnIndex] ? acc.concat(tuple[columnIndex]) : acc;
+  }, []);
+}
+
 module.exports = {
   flattenChildrenMatrix,
   doesChildrenExistInOneColumn,
   doesChildrenExistInOneRow,
-  getTupleChildrenCount
+  getTupleChildrenCount,
+  getColumnNodes
 };

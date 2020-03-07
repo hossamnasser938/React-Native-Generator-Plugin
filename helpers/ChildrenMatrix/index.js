@@ -1,3 +1,5 @@
+const { getTupleChildrenCount } = require("./helpers");
+
 /**
  * constructor function that gets children array of a container node
  * and builds a matrix in which children are layed based on their coordinates
@@ -48,7 +50,7 @@ ChildrenMatrix.prototype.setChild = function({ i, j }, child) {
  * @returns an array of nodes
  */
 ChildrenMatrix.prototype.getSlotRowNeighbors = function({ i, j }) {
-  return this.matrix[i].filter(item => item);
+  return this.matrix[i].filter((item, index) => index !== j && item);
 };
 
 /**
@@ -57,8 +59,8 @@ ChildrenMatrix.prototype.getSlotRowNeighbors = function({ i, j }) {
  * @returns an array of nodes
  */
 ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
-  return this.matrix.reduce((acc, v) => {
-    return v[j] ? acc.concat(v[j]) : acc;
+  return this.matrix.reduce((acc, tuple, index) => {
+    return index !== i && tuple[j] ? acc.concat(tuple[j]) : acc;
   }, []);
 };
 
@@ -107,6 +109,7 @@ ChildrenMatrix.prototype.calculateSlotChildMetric = function(slot, newChild) {
   });
 
   return metric;
+  // return metric < proposedMetric ? metric : proposedMetric;
 };
 
 /**
@@ -186,6 +189,32 @@ ChildrenMatrix.prototype.getMostSuitableSlot = function(newChild) {
   return leastMetricSlot.slot;
 };
 
+ChildrenMatrix.prototype.getNodesToBeDuplicated = function() {
+  const detectedNodes = [];
+
+  this.matrix.forEach((tuple, i) => {
+    tuple.forEach((node, j) => {
+      if (
+        node && // not empty slot
+        this.matrix[i + 1] && // not last tuple in the matrix
+        getTupleChildrenCount(this.matrix[i + 1]) && // next tuple hase nodes
+        !this.matrix[i + 1][j] && // the bottom neighbor is an empty slot
+        this.getSlotRowNeighbors({ i: i + 1, j }).find(
+          item =>
+            // check if any node withing this row lies within the height of the detected node
+            item.boundsInParent.y >= node.boundsInParent.y &&
+            item.boundsInParent.y <=
+              node.boundsInParent.y + node.boundsInParent.height
+        )
+      ) {
+        detectedNodes.push({ node, slot: { i, j } });
+      }
+    });
+  });
+
+  return detectedNodes;
+};
+
 /**
  * lays the children nodes in the matrix
  * @returns the matrix after laying the children in
@@ -198,6 +227,17 @@ ChildrenMatrix.prototype.layChildrenInsideMatrix = function() {
 
     this.setChild(suitableSlot, child);
   });
+
+  // detect nodes
+  let detectedNodes = this.getNodesToBeDuplicated();
+
+  while (detectedNodes.length) {
+    detectedNodes.forEach(({ node, slot }) => {
+      this.setChild({ i: slot.i + 1, j: slot.j }, node);
+    });
+
+    detectedNodes = this.getNodesToBeDuplicated();
+  }
 
   return this.matrix;
 };

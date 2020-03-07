@@ -10,6 +10,7 @@ const { generateGroupCode } = require("./generateGroupCode");
 const { generateSymbolInstanceCode } = require("./generateSymbolInstanceCode");
 const { generateRepeatGridCode } = require("./generateRepeatGridCode");
 const { generateLinkedGraphicCode } = require("./generateLinkedGraphicCode");
+const { generateChildrenMatrixCode } = require("./generateChildrenMatrixCode");
 
 const {
   isTraversing,
@@ -57,6 +58,9 @@ function generateNodeCode(node, container) {
 
     case "LinkedGraphic":
       return generateLinkedGraphicCode(node);
+
+    case "ChildrenMatrix":
+      return generateChildrenMatrixCode(container, node);
 
     default:
       return "<StrangeNode />\n";
