@@ -193,7 +193,7 @@ ChildrenMatrix.prototype.getPossibleSlots = function() {
         if (
           rowIndex + 1 > 0 &&
           rowIndex + 1 < this.n &&
-          !this.matrix[rowIndex + 1][columnIndex]
+          !this.getChild({ i: rowIndex + 1, j: columnIndex })
         ) {
           possibleSlots.push({ i: rowIndex + 1, j: columnIndex });
         }
@@ -201,7 +201,7 @@ ChildrenMatrix.prototype.getPossibleSlots = function() {
         if (
           columnIndex + 1 > 0 &&
           columnIndex + 1 < this.n &&
-          !this.matrix[rowIndex][columnIndex + 1]
+          !this.getChild({ i: rowIndex, j: columnIndex + 1 })
         ) {
           possibleSlots.push({ i: rowIndex, j: columnIndex + 1 });
         }
@@ -266,7 +266,7 @@ ChildrenMatrix.prototype.getNodesToBeDuplicated = function() {
         node && // not empty slot
         this.matrix[i + 1] && // not last row in the matrix
         this.getRowActualChildrenCount(i + 1) && // next row has nodes
-        !this.matrix[i + 1][j] && // the bottom neighbor is an empty slot
+        !this.getChild({ i: i + 1, j }) && // the bottom neighbor is an empty slot
         // check if any node in the next row lies within the height of this node
         this.getSlotRowNeighbors({ i: i + 1, j }).find(
           item =>
@@ -402,7 +402,7 @@ ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
   // set duplicated node
   newChildrenMatrix.setChild(
     { i: targetSlot.i, j: therIsLeftNodes ? 1 : 0 },
-    this.matrix[targetSlot.i][targetSlot.j]
+    this.getChild(targetSlot)
   );
 
   // set nodes on left and right of the duplicated node

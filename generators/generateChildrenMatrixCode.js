@@ -10,7 +10,7 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
 
   // check if it is only one node
   if (childrenMatrix.n === 1) {
-    return generateNodeCode(childrenMatrix.matrix[0][0], parent);
+    return generateNodeCode(childrenMatrix.getChild({ i: 0, j: 0 }), parent);
   }
 
   // check whether children exist in one column

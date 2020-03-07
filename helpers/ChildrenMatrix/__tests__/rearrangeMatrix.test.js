@@ -24,12 +24,12 @@ test("test ChildrenMatrix.rearrangeMatrix function", () => {
     [expect.anyFalsyValue(), expect.anyFalsyValue(), expect.anyFalsyValue()]
   ]);
 
-  expect(m.matrix[0][0].matrix).toEqual([
+  expect(m.getChild({ i: 0, j: 0 }).matrix).toEqual([
     [child1, expect.anyFalsyValue()],
     [child3, expect.anyFalsyValue()]
   ]);
 
-  expect(m.matrix[0][2].matrix).toEqual([
+  expect(m.getChild({ i: 0, j: 2 }).matrix).toEqual([
     [child2, expect.anyFalsyValue()],
     [child4, expect.anyFalsyValue()]
   ]);
