@@ -4,7 +4,7 @@ const child1 = { guid: "child1" };
 const child2 = { guid: "child2" };
 const child3 = { guid: "child3" };
 const child4 = { guid: "child4" };
-const child5 = { guid: "child4" };
+const child5 = { guid: "child5" };
 
 describe("test ChildrenMatrix.checkTheCase function", () => {
   test("should return duplicated node", () => {
