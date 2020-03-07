@@ -219,24 +219,35 @@ ChildrenMatrix.prototype.getNodesToBeDuplicated = function() {
   return toBeDuplicatedNodes;
 };
 
-ChildrenMatrix.prototype.checkTheCase = function() {
+/**
+ * gets the first slot of a duplicated node if exist
+ * @returns a slot object or null
+ */
+ChildrenMatrix.prototype.checkDuplicatedNodesExist = function() {
+  // iterate over columns
   for (let j = 0; j < this.n; j++) {
     const columnNodes = getColumnNodes(this.matrix, j);
 
-    const nodeIndex = columnNodes.findIndex(
+    // get top duplicated node row index
+    const nodeRowIndex = columnNodes.findIndex(
       (node, index) =>
         index < columnNodes.length - 1 && // it is not the last node in the array
         node.guid === columnNodes[index + 1].guid // it occupies the next node
     );
 
-    if (nodeIndex !== -1) {
-      return { i: nodeIndex, j };
+    if (nodeRowIndex !== -1) {
+      return { i: nodeRowIndex, j };
     }
   }
 
   return null;
 };
 
+/**
+ * given a slot of a duplicated node, it gets how many rows to be merged(or how many duplicated node exist)
+ * @param {*} slot a slot that contains a duplicated node
+ * @returns an integer representing how many duplicated nodes
+ */
 ChildrenMatrix.prototype.getToBeMergedRowsCount = function(targetSlot) {
   const columnNodes = getColumnNodes(this.matrix, targetSlot.j);
 
@@ -244,8 +255,8 @@ ChildrenMatrix.prototype.getToBeMergedRowsCount = function(targetSlot) {
     .slice(targetSlot.i)
     .reduce((acc, node, index, slicedArray) => {
       if (
-        index < slicedArray.length - 1 &&
-        node.guid === slicedArray[index + 1].guid
+        index < slicedArray.length - 1 && // node not exist in the last column
+        node.guid === slicedArray[index + 1].guid // the next node in the column is duplicated
       ) {
         return acc + 1;
       }
@@ -254,56 +265,61 @@ ChildrenMatrix.prototype.getToBeMergedRowsCount = function(targetSlot) {
     }, 1);
 };
 
+/**
+ * rearrange the matrix to remove duplicated nodes and create nested ChildrenMatrix to fit complex structure
+ * this function updates all instance variables: children, n, matrix
+ * @param {*} slot a slot that contains a duplicated node
+ * @returns nothing
+ */
 ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
   const toBeMergedRowsCount = this.getToBeMergedRowsCount(targetSlot);
-  const toBeMergedRows = [targetSlot.i];
+  const toBeMergedRowsIndices = [targetSlot.i];
 
   for (let iterator = 1; iterator < toBeMergedRowsCount; iterator++) {
-    toBeMergedRows.push(iterator + toBeMergedRows[0]);
+    toBeMergedRowsIndices.push(iterator + toBeMergedRowsIndices[0]);
   }
 
-  let childrenCount = 1; // for the items to be merged
+  let childrenCount = 1; // 1 for the duplicated nodes that will be eventually one node
 
-  // rows not affected with the merge
+  // iterate over rows not affected with the merge
   this.matrix.forEach((row, rowIndex) => {
-    if (!toBeMergedRows.includes(rowIndex)) {
+    if (!toBeMergedRowsIndices.includes(rowIndex)) {
       childrenCount += getTupleChildrenCount(row);
     }
   });
 
-  // items to be merged left & right adjacents
-  let therIsLeft = false;
-  let thereIsRight = false;
+  // check if the duplicated node has items to be merged on its left & right
+  let therIsLeftNodes = false;
+  let thereIsRightNodes = false;
 
   this.matrix.forEach((tuple, i) => {
     tuple.forEach((node, j) => {
-      if (node && toBeMergedRows.includes(i)) {
+      if (node && toBeMergedRowsIndices.includes(i)) {
         if (j > targetSlot.j) {
-          thereIsRight = true;
+          thereIsRightNodes = true;
         } else if (j < targetSlot.j) {
-          therIsLeft = true;
+          therIsLeftNodes = true;
         }
       }
     });
   });
 
-  if (therIsLeft) {
+  if (therIsLeftNodes) {
     childrenCount += 1;
   }
 
-  if (thereIsRight) {
+  if (thereIsRightNodes) {
     childrenCount += 1;
   }
 
   const children = new Array(childrenCount);
-
   children.fill({});
 
   const newChildrenMatrix = new ChildrenMatrix(children);
 
   // set not affected nodes
   this.matrix.forEach((tuple, i) => {
-    if (!toBeMergedRows.includes(i)) {
+    if (!toBeMergedRowsIndices.includes(i)) {
       tuple.forEach((node, j) => {
         if (node) {
           if (i > targetSlot.i + toBeMergedRowsCount - 1) {
@@ -319,34 +335,32 @@ ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
     }
   });
 
-  // set targetSlot and its subsequents in the slot {i: targetSlot.i, j: 1}
+  // set duplicated node
   newChildrenMatrix.setChild(
-    { i: targetSlot.i, j: therIsLeft ? 1 : 0 },
+    { i: targetSlot.i, j: therIsLeftNodes ? 1 : 0 },
     this.matrix[targetSlot.i][targetSlot.j]
   );
 
-  // set its left in the slot {i: targetSlot.i, j: 0}
-  if (therIsLeft) {
-    const leftNodes = [];
+  // set nodes on left and right of the duplicated node
+  if (therIsLeftNodes) {
+    const leftItems = [];
 
     this.matrix.forEach((tuple, i) => {
-      if (toBeMergedRows.includes(i)) {
+      if (toBeMergedRowsIndices.includes(i)) {
         tuple.forEach((node, j) => {
           if (node && j < targetSlot.j) {
-            leftNodes.push({ node, slot: { i, j } });
+            leftItems.push({ node, slot: { i, j } });
           }
         });
       }
     });
 
-    const targetSlotLeftCMatrixChildren = new Array(leftNodes.length);
-    targetSlotLeftCMatrixChildren.fill({});
-
+    const targetSlotLeftCMatrixChildren = leftItems.map(item => item.node);
     const targetSlotLeftCMatrix = new ChildrenMatrix(
       targetSlotLeftCMatrixChildren
     );
 
-    leftNodes.forEach(({ node, slot }) => {
+    leftItems.forEach(({ node, slot }) => {
       targetSlotLeftCMatrix.setChild(
         { i: slot.i - targetSlot.i, j: slot.j },
         node
@@ -360,27 +374,25 @@ ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
   }
 
   // set its right in the slot {i: targetSlot.i, j: 2}
-  if (thereIsRight) {
-    const rightNodes = [];
+  if (thereIsRightNodes) {
+    const rightItems = [];
 
     this.matrix.forEach((tuple, i) => {
-      if (toBeMergedRows.includes(i)) {
+      if (toBeMergedRowsIndices.includes(i)) {
         tuple.forEach((node, j) => {
           if (node && j > targetSlot.j) {
-            rightNodes.push({ node, slot: { i, j } });
+            rightItems.push({ node, slot: { i, j } });
           }
         });
       }
     });
 
-    const targetSlotRightCMatrixChildren = new Array(rightNodes.length);
-    targetSlotRightCMatrixChildren.fill({});
-
+    const targetSlotRightCMatrixChildren = rightItems.map(item => item.node);
     const targetSlotRightCMatrix = new ChildrenMatrix(
       targetSlotRightCMatrixChildren
     );
 
-    rightNodes.forEach(({ node, slot }) => {
+    rightItems.forEach(({ node, slot }) => {
       targetSlotRightCMatrix.setChild(
         { i: slot.i - targetSlot.i, j: slot.j - targetSlot.j - 1 },
         node
@@ -388,7 +400,7 @@ ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
     });
 
     newChildrenMatrix.setChild(
-      { i: targetSlot.i, j: therIsLeft ? 2 : 1 },
+      { i: targetSlot.i, j: therIsLeftNodes ? 2 : 1 },
       targetSlotRightCMatrix
     );
   }
@@ -421,11 +433,11 @@ ChildrenMatrix.prototype.layChildrenInsideMatrix = function() {
     toBeDuplicatedNodes = this.getNodesToBeDuplicated();
   }
 
-  let tSlot = this.checkTheCase();
+  let tSlot = this.checkDuplicatedNodesExist();
   while (tSlot) {
     this.rearrangeMatrix(tSlot);
 
-    tSlot = this.checkTheCase();
+    tSlot = this.checkDuplicatedNodesExist();
   }
 
   return this.matrix;
