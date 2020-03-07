@@ -58,15 +58,22 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
     const childrenCount = childrenMatrix.getRowActualChildrenCount(rowIndex);
 
     if (childrenCount) {
-      code +=
-        childrenCount > 1
-          ? `<View ${"style={{flexDirection: 'row'}}"}>
-      ${row.map(child => child && generateNodeCode(child, parent))}
-    </View>\n`
-          : generateNodeCode(
-              row.find(child => !!child),
-              parent
-            );
+      if (childrenCount > 1) {
+        code += `<View ${"style={{flexDirection: 'row'}}"}>`;
+
+        row.map(child => {
+          if (child) {
+            code += generateNodeCode(child, parent);
+          }
+        });
+
+        code += `</View>\n`;
+      } else {
+        code += generateNodeCode(
+          row.find(child => !!child),
+          parent
+        );
+      }
     }
   });
 
