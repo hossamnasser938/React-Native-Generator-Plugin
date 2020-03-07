@@ -1,5 +1,3 @@
-const { getTupleChildrenCount, getColumnNodes } = require("./helpers");
-
 /**
  * constructor function that gets children array of a container node
  * and builds a matrix in which children are layed based on their coordinates
@@ -61,6 +59,41 @@ ChildrenMatrix.prototype.getSlotRowNeighbors = function({ i, j }) {
 ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
   return this.matrix.reduce((acc, tuple, index) => {
     return index !== i && tuple[j] ? acc.concat(tuple[j]) : acc;
+  }, []);
+};
+
+ChildrenMatrix.prototype.flattenChildrenMatrix = function() {
+  const flattenedArray = [];
+
+  this.matrix.forEach(row => {
+    row.forEach(node => {
+      if (node) {
+        flattenedArray.push(node);
+      }
+    });
+  });
+
+  return flattenedArray;
+};
+
+ChildrenMatrix.prototype.doesChildrenExistInOneColumn = function() {
+  return this.matrix.reduce((acc, row) => !!row[0] && acc, true);
+};
+
+ChildrenMatrix.prototype.doesChildrenExistInOneRow = function() {
+  return this.matrix[0].reduce((acc, node) => !!node && acc, true);
+};
+
+ChildrenMatrix.prototype.getRowActualChildrenCount = function(rowIndex) {
+  return this.matrix[rowIndex].reduce(
+    (acc, node) => (!!node ? acc + 1 : acc),
+    0
+  );
+};
+
+ChildrenMatrix.prototype.getColumnNodes = function(columnIndex) {
+  return this.matrix.reduce((acc, row) => {
+    return row[columnIndex] ? acc.concat(row[columnIndex]) : acc;
   }, []);
 };
 
@@ -201,7 +234,7 @@ ChildrenMatrix.prototype.getNodesToBeDuplicated = function() {
       if (
         node && // not empty slot
         this.matrix[i + 1] && // not last tuple in the matrix
-        getTupleChildrenCount(this.matrix[i + 1]) && // next tuple has nodes
+        this.getRowActualChildrenCount(i + 1) && // next tuple has nodes
         !this.matrix[i + 1][j] && // the bottom neighbor is an empty slot
         // check if any node in the next row lies within the height of this node
         this.getSlotRowNeighbors({ i: i + 1, j }).find(
@@ -226,7 +259,7 @@ ChildrenMatrix.prototype.getNodesToBeDuplicated = function() {
 ChildrenMatrix.prototype.checkDuplicatedNodesExist = function() {
   // iterate over columns
   for (let j = 0; j < this.n; j++) {
-    const columnNodes = getColumnNodes(this.matrix, j);
+    const columnNodes = this.getColumnNodes(j);
 
     // get top duplicated node row index
     const nodeRowIndex = columnNodes.findIndex(
@@ -249,7 +282,7 @@ ChildrenMatrix.prototype.checkDuplicatedNodesExist = function() {
  * @returns an integer representing how many duplicated nodes
  */
 ChildrenMatrix.prototype.getToBeMergedRowsCount = function(targetSlot) {
-  const columnNodes = getColumnNodes(this.matrix, targetSlot.j);
+  const columnNodes = this.getColumnNodes(targetSlot.j);
 
   return columnNodes
     .slice(targetSlot.i)
@@ -284,7 +317,7 @@ ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
   // iterate over rows not affected with the merge
   this.matrix.forEach((row, rowIndex) => {
     if (!toBeMergedRowsIndices.includes(rowIndex)) {
-      childrenCount += getTupleChildrenCount(row);
+      childrenCount += this.getRowActualChildrenCount(rowIndex);
     }
   });
 

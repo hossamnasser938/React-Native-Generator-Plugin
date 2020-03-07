@@ -1,10 +1,3 @@
-const {
-  flattenChildrenMatrix,
-  doesChildrenExistInOneColumn,
-  doesChildrenExistInOneRow,
-  getTupleChildrenCount
-} = require("../helpers/ChildrenMatrix/helpers");
-
 /**
  * generates code for a set of nodes aligned in a ChildrenMatrix
  * @param {*} parent
@@ -21,9 +14,7 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
   }
 
   // check whether children exist in one column
-  const childrenExistInOneColumn = doesChildrenExistInOneColumn(
-    childrenMatrix.matrix
-  );
+  const childrenExistInOneColumn = childrenMatrix.doesChildrenExistInOneColumn();
 
   let code = "";
 
@@ -32,7 +23,7 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
       additionalStyle ? ` style={${JSON.stringify(additionalStyle)}}` : ""
     }>\n`;
 
-    flattenChildrenMatrix(childrenMatrix.matrix).forEach(child => {
+    childrenMatrix.flattenChildrenMatrix().forEach(child => {
       code += generateNodeCode(child, parent);
     });
 
@@ -42,16 +33,14 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
   }
 
   // check whether children exist in one row
-  const childrenExistInOneRow = doesChildrenExistInOneRow(
-    childrenMatrix.matrix
-  );
+  const childrenExistInOneRow = childrenMatrix.doesChildrenExistInOneRow();
 
   if (childrenExistInOneRow) {
     const style = { flexDirection: "row", ...additionalStyle };
 
     code += `<View style={${JSON.stringify(style)}}>\n`;
 
-    flattenChildrenMatrix(childrenMatrix.matrix).forEach(child => {
+    childrenMatrix.flattenChildrenMatrix().forEach(child => {
       code += generateNodeCode(child, parent);
     });
 
@@ -65,17 +54,17 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
     additionalStyle ? ` style={${JSON.stringify(additionalStyle)}}` : ""
   }>\n`;
 
-  childrenMatrix.matrix.map(tuple => {
-    const childrenCount = getTupleChildrenCount(tuple);
+  childrenMatrix.matrix.map((row, rowIndex) => {
+    const childrenCount = childrenMatrix.getRowActualChildrenCount(rowIndex);
 
     if (childrenCount) {
       code +=
         childrenCount > 1
           ? `<View ${"style={{flexDirection: 'row'}}"}>
-      ${tuple.map(child => child && generateNodeCode(child, parent))}
+      ${row.map(child => child && generateNodeCode(child, parent))}
     </View>\n`
           : generateNodeCode(
-              tuple.find(child => !!child),
+              row.find(child => !!child),
               parent
             );
     }
