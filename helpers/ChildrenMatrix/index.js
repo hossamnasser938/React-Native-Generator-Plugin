@@ -43,6 +43,15 @@ ChildrenMatrix.prototype.setChild = function({ i, j }, child) {
 };
 
 /**
+ * gets a child node from a given empty slot
+ * @param slot
+ * @returns node
+ */
+ChildrenMatrix.prototype.getChild = function({ i, j }) {
+  return this.matrix[i][j];
+};
+
+/**
  * gets the slots that contain children nodes within the same row of the given empty slot
  * @param slot
  * @returns an array of nodes
