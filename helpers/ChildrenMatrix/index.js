@@ -62,6 +62,10 @@ ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
   }, []);
 };
 
+/**
+ * gets all children in a 1-D array
+ * @returns an array of nodes
+ */
 ChildrenMatrix.prototype.flattenChildrenMatrix = function() {
   const flattenedArray = [];
 
@@ -76,14 +80,27 @@ ChildrenMatrix.prototype.flattenChildrenMatrix = function() {
   return flattenedArray;
 };
 
+/**
+ * checks if all children are aligned in one column
+ * @returns a boolean value
+ */
 ChildrenMatrix.prototype.doesChildrenExistInOneColumn = function() {
   return this.matrix.reduce((acc, row) => !!row[0] && acc, true);
 };
 
+/**
+ * checks if all children are aligned in one row
+ * @returns a boolean value
+ */
 ChildrenMatrix.prototype.doesChildrenExistInOneRow = function() {
   return this.matrix[0].reduce((acc, node) => !!node && acc, true);
 };
 
+/**
+ * gets the number of nodes in a give row
+ * @param rowIndex
+ * @returns an array of nodes
+ */
 ChildrenMatrix.prototype.getRowActualChildrenCount = function(rowIndex) {
   return this.matrix[rowIndex].reduce(
     (acc, node) => (!!node ? acc + 1 : acc),
@@ -91,6 +108,11 @@ ChildrenMatrix.prototype.getRowActualChildrenCount = function(rowIndex) {
   );
 };
 
+/**
+ * gets the nodes within a column
+ * @param columnIndex
+ * @returns an array of nodes
+ */
 ChildrenMatrix.prototype.getColumnNodes = function(columnIndex) {
   return this.matrix.reduce((acc, row) => {
     return row[columnIndex] ? acc.concat(row[columnIndex]) : acc;
