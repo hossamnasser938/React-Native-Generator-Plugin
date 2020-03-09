@@ -9,7 +9,7 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
   const { generateNodeCode } = require("./generateNodeCode"); // Late require for fixing circular dependency
 
   // check if it is only one node
-  if (childrenMatrix.n === 1) {
+  if (childrenMatrix.n === 1 && !additionalStyle) {
     return generateNodeCode(childrenMatrix.getChild({ i: 0, j: 0 }), parent);
   }
 
