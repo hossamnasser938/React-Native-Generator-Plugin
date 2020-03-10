@@ -16,15 +16,41 @@ async function generateCodeForSelectedComponent(selection) {
     error("No selected items");
     return;
   } else {
-    const currentArtboard = getNodeArtboard(selection.items[0]);
-    if (!currentArtboard) {
-      error("Please, select component from artboard");
-      return;
+    const selectedItemsArtboards = [];
+
+    for (const selectedItem of selection.items) {
+      const selectedItemArtboard = getNodeArtboard(selectedItem);
+
+      if (!selectedItemArtboard) {
+        error("Please, select component within an artboard");
+        return;
+      }
+
+      // if this artboard does not exits then add it
+      if (
+        !selectedItemsArtboards.find(
+          artboard => artboard.guid === selectedItemArtboard.guid
+        )
+      ) {
+        selectedItemsArtboards.push(selectedItemArtboard);
+      }
+
+      if (selectedItemsArtboards.length > 1) {
+        error("Please, select component within one artboard");
+        return;
+      }
     }
 
-    const children = [];
-    flattenNodeChildren(currentArtboard, children);
-    specifyChildrenNearestParents(children);
+    // if current artboard is not one of the selected items then we need to attach each child to its nearset parent
+    // if it is, then this step will be done inside generateArtbpardCode
+
+    const currentArtboard = selectedItemsArtboards[0];
+
+    if (!selection.items.find(item => item.guid === currentArtboard.guid)) {
+      const children = [];
+      flattenNodeChildren(currentArtboard, children);
+      specifyChildrenNearestParents(children);
+    }
 
     if (selection.items.length === 1) {
       console.log(generateNodeCode(selection.items[0]));
