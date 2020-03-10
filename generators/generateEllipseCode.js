@@ -1,6 +1,6 @@
 const { generateGraphicNodeStyles } = require("./generateGraphicNodeStyles");
 const { generateContainerCode } = require("./generateContainerCode");
-const { getNodeChildren } = require("../helpers/getNodeChildren/index");
+const { getParentChildren } = require("../helpers/childNearestParent/index");
 const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
@@ -33,10 +33,10 @@ function generateEllipseCode(ellipse) {
     }
   }
 
-  const children = getNodeChildren(ellipse);
+  const children = getParentChildren(ellipse);
 
   if (children.length) {
-    return generateContainerCode(ellipse, children, style);
+    return generateContainerCode(children, style);
   }
 
   return `<View style={${JSON.stringify(style)}}/>\n`;

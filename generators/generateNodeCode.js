@@ -12,16 +12,7 @@ const { generateRepeatGridCode } = require("./generateRepeatGridCode");
 const { generateLinkedGraphicCode } = require("./generateLinkedGraphicCode");
 const { generateChildrenMatrixCode } = require("./generateChildrenMatrixCode");
 
-const {
-  isTraversing,
-  pushChildParentPair
-} = require("../helpers/childrenDirectParents/index");
-
-function generateNodeCode(node, container) {
-  if (isTraversing()) {
-    pushChildParentPair(node.guid, container && container.guid);
-  }
-
+function generateNodeCode(node) {
   switch (node.constructor.name) {
     case "Artboard":
       return generateArtboardCode(node);
@@ -60,7 +51,7 @@ function generateNodeCode(node, container) {
       return generateLinkedGraphicCode(node);
 
     case "ChildrenMatrix":
-      return generateChildrenMatrixCode(container, node);
+      return generateChildrenMatrixCode(node);
 
     default:
       return "<StrangeNode />\n";

@@ -1,16 +1,15 @@
 /**
  * generates code for a set of nodes aligned in a ChildrenMatrix
- * @param {*} parent
  * @param {*} childrenMatrix
  * @param {*} additionalStyle a style object coming from Rectangle or Ellipse
  * @returns string ui code
  */
-function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
+function generateChildrenMatrixCode(childrenMatrix, additionalStyle) {
   const { generateNodeCode } = require("./generateNodeCode"); // Late require for fixing circular dependency
 
   // check if it is only one node
   if (childrenMatrix.n === 1 && !additionalStyle) {
-    return generateNodeCode(childrenMatrix.getChild({ i: 0, j: 0 }), parent);
+    return generateNodeCode(childrenMatrix.getChild({ i: 0, j: 0 }));
   }
 
   // check whether children exist in one column
@@ -24,7 +23,7 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
     }>\n`;
 
     childrenMatrix.flatten().forEach(child => {
-      code += generateNodeCode(child, parent);
+      code += generateNodeCode(child);
     });
 
     code += `</View>\n`;
@@ -41,7 +40,7 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
     code += `<View style={${JSON.stringify(style)}}>\n`;
 
     childrenMatrix.flatten().forEach(child => {
-      code += generateNodeCode(child, parent);
+      code += generateNodeCode(child);
     });
 
     code += `</View>\n`;
@@ -63,16 +62,13 @@ function generateChildrenMatrixCode(parent, childrenMatrix, additionalStyle) {
 
         row.map(child => {
           if (child) {
-            code += generateNodeCode(child, parent);
+            code += generateNodeCode(child);
           }
         });
 
         code += `</View>\n`;
       } else {
-        code += generateNodeCode(
-          row.find(child => !!child),
-          parent
-        );
+        code += generateNodeCode(row.find(child => !!child));
       }
     }
   });

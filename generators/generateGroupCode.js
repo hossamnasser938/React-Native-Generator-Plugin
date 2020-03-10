@@ -1,12 +1,10 @@
 const { generateContainerCode } = require("./generateContainerCode");
-const { getNodeChildren } = require("../helpers/getNodeChildren/index");
+const { getParentChildren } = require("../helpers/childNearestParent/index");
 
 function generateGroupCode(group) {
-  const groupChildren = group.children.map(item => item);
+  const groupChildren = getParentChildren(group);
 
-  const nodesInBounds = getNodeChildren(group);
-
-  return generateContainerCode(group, [...groupChildren, ...nodesInBounds]);
+  return generateContainerCode(groupChildren);
 }
 
 module.exports = {

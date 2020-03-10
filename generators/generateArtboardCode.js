@@ -1,12 +1,21 @@
 const { generateContainerCode } = require("./generateContainerCode");
-const { getNodeChildren } = require("../helpers/getNodeChildren/index");
+const {
+  flattenNodeChildren,
+  specifyChildrenNearestParents,
+  getParentChildren
+} = require("../helpers/childNearestParent/index");
 
 function generateArtboardCode(artboard) {
-  const children = getNodeChildren(artboard);
+  const artboardFlattenedChildren = [artboard];
+  flattenNodeChildren(artboard, artboardFlattenedChildren);
+
+  specifyChildrenNearestParents(artboardFlattenedChildren);
+
+  const style = { flex: 1 };
 
   let code = `{/* <Screen ${artboard.name}> */}\n`;
 
-  code += generateContainerCode(artboard, children);
+  code += generateContainerCode(getParentChildren(artboard), style);
 
   code += `{/* </Screen ${artboard.name}> */}\n\n`;
 
