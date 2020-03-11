@@ -1,5 +1,10 @@
+const { generateContainerCode } = require("./generateContainerCode");
+const { getParentChildren } = require("../helpers/childNearestParent/index");
+
 function generateRepeatGridCode(repeatGrid) {
-  return `<RepeatGrid />\n`;
+  const repeatGridChildren = getParentChildren(repeatGrid);
+
+  return generateContainerCode(repeatGridChildren);
 }
 
 module.exports = {
