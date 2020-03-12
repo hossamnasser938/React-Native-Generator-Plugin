@@ -1,5 +1,10 @@
+const { generateContainerCode } = require("./generateContainerCode");
+const { getParentChildren } = require("../helpers/childNearestParent/index");
+
 function generateSymbolInstanceCode(symbolInstance) {
-  return `<SymbolInstance />\n`;
+  const symbolInstanceChildren = getParentChildren(symbolInstance);
+
+  return generateContainerCode(symbolInstanceChildren);
 }
 
 module.exports = {
