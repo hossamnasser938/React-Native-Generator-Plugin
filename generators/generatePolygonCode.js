@@ -1,5 +1,5 @@
 function generatePolygonCode(polygon) {
-  return `<Polygon />\n`;
+  return `{/* <Polygon /> {Polygon is not supported. It can be exported as Svg} */}\n`;
 }
 
 module.exports = {
