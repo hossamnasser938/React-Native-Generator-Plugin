@@ -6,30 +6,23 @@ describe("test ChildrenMatrix.calculateSlotChildMetric function", () => {
     m.setChild(
       { i: 0, j: 0 },
       {
-        boundsInParent: { x: 100, y: 100, width: 50, height: 50 }
+        globalBounds: { x: 100, y: 100, width: 50, height: 50 }
       }
     );
 
     expect(
       m.calculateSlotChildMetric(
         { i: 0, j: 1 },
-        { boundsInParent: { x: 200, y: 100, width: 50, height: 50 } }
+        { globalBounds: { x: 200, y: 100, width: 50, height: 50 } }
       )
-    ).toBe(0);
+    ).toBe(1);
 
     expect(
       m.calculateSlotChildMetric(
-        { i: 0, j: 1 },
-        { boundsInParent: { x: 200, y: 150, width: 50, height: 50 } }
+        { i: 1, j: 0 },
+        { globalBounds: { x: 200, y: 100, width: 50, height: 50 } }
       )
-    ).toBe(50);
-
-    expect(
-      m.calculateSlotChildMetric(
-        { i: 0, j: 1 },
-        { boundsInParent: { x: 200, y: 50, width: 50, height: 50 } }
-      )
-    ).toBe(50);
+    ).toBe(-1);
   });
 
   test("when having column neighbours", () => {
@@ -38,68 +31,75 @@ describe("test ChildrenMatrix.calculateSlotChildMetric function", () => {
     m.setChild(
       { i: 0, j: 0 },
       {
-        boundsInParent: { x: 100, y: 100, width: 50, height: 50 }
+        globalBounds: { x: 100, y: 100, width: 50, height: 50 }
       }
     );
 
     expect(
       m.calculateSlotChildMetric(
         { i: 1, j: 0 },
-        { boundsInParent: { x: 100, y: 200, width: 50, height: 50 } }
+        { globalBounds: { x: 100, y: 200, width: 50, height: 50 } }
       )
-    ).toBe(0);
+    ).toBe(1);
 
     expect(
       m.calculateSlotChildMetric(
-        { i: 1, j: 0 },
-        { boundsInParent: { x: 150, y: 200, width: 50, height: 50 } }
+        { i: 0, j: 1 },
+        { globalBounds: { x: 100, y: 200, width: 50, height: 50 } }
       )
-    ).toBe(50);
-
-    expect(
-      m.calculateSlotChildMetric(
-        { i: 1, j: 0 },
-        { boundsInParent: { x: 50, y: 200, width: 50, height: 50 } }
-      )
-    ).toBe(50);
+    ).toBe(-1);
   });
 
   test("when having both row and column neighbours", () => {
-    const m = new ChildrenMatrix([{}, {}]);
+    const m = new ChildrenMatrix([{}, {}, {}, {}]);
 
     m.setChild(
       { i: 0, j: 0 },
       {
-        boundsInParent: { x: 100, y: 100, width: 50, height: 50 }
+        globalBounds: { x: 100, y: 100, width: 50, height: 50 }
+      }
+    );
+
+    m.setChild(
+      { i: 0, j: 1 },
+      {
+        globalBounds: { x: 200, y: 100, width: 50, height: 50 }
       }
     );
 
     m.setChild(
       { i: 1, j: 1 },
       {
-        boundsInParent: { x: 200, y: 200, width: 50, height: 50 }
+        globalBounds: { x: 200, y: 200, width: 50, height: 50 }
       }
     );
 
     expect(
       m.calculateSlotChildMetric(
-        { i: 0, j: 1 },
-        { boundsInParent: { x: 200, y: 100, width: 50, height: 50 } }
+        { i: 1, j: 0 },
+        { globalBounds: { x: 100, y: 200, width: 50, height: 50 } }
+      )
+    ).toBe(2);
+
+    expect(
+      m.calculateSlotChildMetric(
+        { i: 2, j: 0 },
+        { globalBounds: { x: 100, y: 200, width: 50, height: 50 } }
+      )
+    ).toBe(1);
+
+    expect(
+      m.calculateSlotChildMetric(
+        { i: 0, j: 2 },
+        { globalBounds: { x: 100, y: 200, width: 50, height: 50 } }
+      )
+    ).toBe(-2);
+
+    expect(
+      m.calculateSlotChildMetric(
+        { i: 2, j: 2 },
+        { globalBounds: { x: 100, y: 200, width: 50, height: 50 } }
       )
     ).toBe(0);
-
-    expect(
-      m.calculateSlotChildMetric(
-        { i: 0, j: 1 },
-        { boundsInParent: { x: 250, y: 150, width: 50, height: 50 } }
-      )
-    ).toBe(100);
-
-    expect(
-      m.calculateSlotChildMetric(
-        { i: 0, j: 1 },
-        { boundsInParent: { x: 150, y: 50, width: 50, height: 50 } }
-      )
-    ).toBe(100);
   });
 });

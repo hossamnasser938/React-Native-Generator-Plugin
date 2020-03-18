@@ -129,22 +129,49 @@ ChildrenMatrix.prototype.getColumnNodes = function(columnIndex) {
 };
 
 /**
+ * checks if 2 nodes exists in the same column(another meaning one of them exists withing the same vertical range of the other)
+ */
+ChildrenMatrix.prototype.doNodesExistWithinSameColumn = function(
+  firstNode,
+  secondNode
+) {
+  return (
+    (firstNode.globalBounds.x >= secondNode.globalBounds.x &&
+      firstNode.globalBounds.x <=
+        secondNode.globalBounds.x + secondNode.globalBounds.width) ||
+    (secondNode.globalBounds.x >= firstNode.globalBounds.x &&
+      secondNode.globalBounds.x <=
+        firstNode.globalBounds.x + firstNode.globalBounds.width)
+  );
+};
+
+/**
+ * checks if 2 nodes exists in the same row(another meaning one of them exists withing the same horizontal range of the other)
+ */
+ChildrenMatrix.prototype.doNodesExistWithinSameRow = function(
+  firstNode,
+  secondNode
+) {
+  return (
+    (firstNode.globalBounds.y >= secondNode.globalBounds.y &&
+      firstNode.globalBounds.y <=
+        secondNode.globalBounds.y + secondNode.globalBounds.height) ||
+    (secondNode.globalBounds.y >= firstNode.globalBounds.y &&
+      secondNode.globalBounds.y <=
+        firstNode.globalBounds.y + firstNode.globalBounds.height)
+  );
+};
+
+/**
  * sorts the children array such that nodes at the very top left comes first
  * @returns nothing
  */
 ChildrenMatrix.prototype.sortChildren = function() {
-  const childrenDiameter = this.children.map(child => {
-    const diameter = Math.sqrt(
-      Math.pow(child.boundsInParent.x, 2) + Math.pow(child.boundsInParent.y, 2)
-    );
-
-    return { child, diameter };
+  this.children.sort((a, b) => {
+    return this.doNodesExistWithinSameRow(a, b)
+      ? a.globalBounds.x - b.globalBounds.x
+      : a.globalBounds.y - b.globalBounds.y;
   });
-
-  // sort the childrenDiameter array based on diameter
-  childrenDiameter.sort((a, b) => a.diameter - b.diameter);
-
-  this.children = childrenDiameter.map(item => item.child);
 };
 
 /**
@@ -161,19 +188,22 @@ ChildrenMatrix.prototype.calculateSlotChildMetric = function(slot, newChild) {
   const columnNeighbors = this.getSlotColumnNeighbors(slot);
 
   rowNeighbors.forEach(rowNeighbor => {
-    metric += Math.abs(
-      newChild.boundsInParent.y - rowNeighbor.boundsInParent.y
-    );
+    if (this.doNodesExistWithinSameRow(newChild, rowNeighbor)) {
+      metric += 1;
+    } else {
+      metric -= 1;
+    }
   });
 
   columnNeighbors.forEach(columnNeighbor => {
-    metric += Math.abs(
-      newChild.boundsInParent.x - columnNeighbor.boundsInParent.x
-    );
+    if (this.doNodesExistWithinSameColumn(newChild, columnNeighbor)) {
+      metric += 1;
+    } else {
+      metric -= 1;
+    }
   });
 
   return metric;
-  // return metric < proposedMetric ? metric : proposedMetric;
 };
 
 /**
@@ -187,42 +217,17 @@ ChildrenMatrix.prototype.getPossibleSlots = function() {
 
   this.matrix.forEach((row, rowIndex) => {
     row.forEach((slot, columnIndex) => {
-      if (slot) {
-        containsAtLeastOneChild = true;
-        // slot contains a node so check its neighbours
-        if (
-          rowIndex + 1 > 0 &&
-          rowIndex + 1 < this.n &&
-          !this.getChild({ i: rowIndex + 1, j: columnIndex })
-        ) {
-          possibleSlots.push({ i: rowIndex + 1, j: columnIndex });
-        }
-
-        if (
-          columnIndex + 1 > 0 &&
-          columnIndex + 1 < this.n &&
-          !this.getChild({ i: rowIndex, j: columnIndex + 1 })
-        ) {
-          possibleSlots.push({ i: rowIndex, j: columnIndex + 1 });
-        }
+      if (
+        !slot &&
+        (rowIndex === 0 || this.getRowActualChildrenCount(rowIndex - 1)) &&
+        (columnIndex === 0 || this.getColumnNodes(columnIndex - 1).length)
+      ) {
+        possibleSlots.push({ i: rowIndex, j: columnIndex });
       }
     });
   });
 
-  if (!containsAtLeastOneChild) {
-    return [{ i: 0, j: 0 }];
-  }
-
-  // remove duplicates before return
-  return possibleSlots.reduce((acc, v) => {
-    const itemAddedBefore = acc.find(item => item.i === v.i && item.j === v.j);
-
-    if (!itemAddedBefore) {
-      return acc.concat(v);
-    }
-
-    return acc;
-  }, []);
+  return possibleSlots;
 };
 
 /**
@@ -243,7 +248,7 @@ ChildrenMatrix.prototype.getMostSuitableSlot = function(newChild) {
   });
 
   const leastMetricSlot = slotsMetrics.reduce((acc, v) => {
-    if (v.metric < acc.metric) {
+    if (v.metric > acc.metric) {
       return v;
     }
 
@@ -270,9 +275,9 @@ ChildrenMatrix.prototype.getNodesToBeDuplicated = function() {
         // check if any node in the next row lies within the height of this node
         this.getSlotRowNeighbors({ i: i + 1, j }).find(
           item =>
-            item.boundsInParent.y >= node.boundsInParent.y &&
-            item.boundsInParent.y <=
-              node.boundsInParent.y + node.boundsInParent.height
+            item.globalBounds.y >= node.globalBounds.y &&
+            item.globalBounds.y <=
+              node.globalBounds.y + node.globalBounds.height
         )
       ) {
         toBeDuplicatedNodes.push({ node, slot: { i, j } });

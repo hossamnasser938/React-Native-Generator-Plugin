@@ -1,17 +1,17 @@
 const { ChildrenMatrix } = require("../index");
 
 test("test getNodesToBeDuplicated function", () => {
-  const child1 = { boundsInParent: { x: 0, y: 0, width: 50, height: 50 } };
-  const child2 = { boundsInParent: { x: 100, y: 0, width: 50, height: 200 } };
-  const child3 = { boundsInParent: { x: 200, y: 0, width: 50, height: 50 } };
-  const child4 = { boundsInParent: { x: 0, y: 100, width: 50, height: 50 } };
-  const child5 = { boundsInParent: { x: 200, y: 100, width: 50, height: 50 } };
-  const child6 = { boundsInParent: { x: 0, y: 150, width: 50, height: 50 } };
-  const child7 = { boundsInParent: { x: 200, y: 150, width: 50, height: 50 } };
-  const child8 = { boundsInParent: { x: 0, y: 200, width: 50, height: 50 } };
-  const child9 = { boundsInParent: { x: 200, y: 200, width: 50, height: 50 } };
-  const child10 = { boundsInParent: { x: 0, y: 250, width: 50, height: 50 } };
-  const child11 = { boundsInParent: { x: 200, y: 250, width: 50, height: 50 } };
+  const child1 = { globalBounds: { x: 0, y: 0, width: 50, height: 50 } };
+  const child2 = { globalBounds: { x: 100, y: 0, width: 50, height: 200 } };
+  const child3 = { globalBounds: { x: 200, y: 0, width: 50, height: 50 } };
+  const child4 = { globalBounds: { x: 0, y: 100, width: 50, height: 50 } };
+  const child5 = { globalBounds: { x: 200, y: 100, width: 50, height: 50 } };
+  const child6 = { globalBounds: { x: 0, y: 150, width: 50, height: 50 } };
+  const child7 = { globalBounds: { x: 200, y: 150, width: 50, height: 50 } };
+  const child8 = { globalBounds: { x: 0, y: 200, width: 50, height: 50 } };
+  const child9 = { globalBounds: { x: 200, y: 200, width: 50, height: 50 } };
+  const child10 = { globalBounds: { x: 0, y: 250, width: 50, height: 50 } };
+  const child11 = { globalBounds: { x: 200, y: 250, width: 50, height: 50 } };
 
   const m = new ChildrenMatrix([
     child1,

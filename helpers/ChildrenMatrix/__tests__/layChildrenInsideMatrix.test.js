@@ -2,27 +2,27 @@ const { ChildrenMatrix } = require("../index");
 
 const child1 = {
   guid: "child1",
-  boundsInParent: { x: 100, y: 100, width: 50, height: 50 }
+  globalBounds: { x: 100, y: 100, width: 50, height: 50 }
 };
 const child2 = {
   guid: "child2",
-  boundsInParent: { x: 200, y: 100, width: 50, height: 50 }
+  globalBounds: { x: 200, y: 100, width: 50, height: 50 }
 };
 const child3 = {
   guid: "child3",
-  boundsInParent: { x: 300, y: 100, width: 50, height: 50 }
+  globalBounds: { x: 300, y: 100, width: 50, height: 50 }
 };
 const child4 = {
   guid: "child4",
-  boundsInParent: { x: 100, y: 200, width: 50, height: 50 }
+  globalBounds: { x: 100, y: 200, width: 50, height: 50 }
 };
 const child5 = {
   guid: "child5",
-  boundsInParent: { x: 200, y: 200, width: 50, height: 50 }
+  globalBounds: { x: 200, y: 200, width: 50, height: 50 }
 };
 const child6 = {
   guid: "child6",
-  boundsInParent: { x: 100, y: 300, width: 50, height: 50 }
+  globalBounds: { x: 100, y: 300, width: 50, height: 50 }
 };
 
 describe("test ChildrenMatrix.layChildrenInsideMatrix function", () => {
@@ -151,7 +151,7 @@ describe("test ChildrenMatrix.layChildrenInsideMatrix function", () => {
   test("should duplicate children", () => {
     const childToBeDuplicated = {
       guid: "childToBeDuplicated",
-      boundsInParent: { x: 150, y: 100, width: 100, height: 200 }
+      globalBounds: { x: 180, y: 100, width: 10, height: 200 }
     };
 
     const m = new ChildrenMatrix([

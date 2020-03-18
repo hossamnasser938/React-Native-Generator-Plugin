@@ -16,11 +16,6 @@ describe("test ChildrenMatrix.getPossibleSlots function", () => {
     m.setChild({ i: 0, j: 0 }, {});
     expect(m.getPossibleSlots()).toMatchArryIgnoringOrder([
       { i: 0, j: 1 },
-      { i: 1, j: 0 }
-    ]);
-
-    m.setChild({ i: 0, j: 1 }, {});
-    expect(m.getPossibleSlots()).toMatchArryIgnoringOrder([
       { i: 1, j: 0 },
       { i: 1, j: 1 }
     ]);
@@ -33,21 +28,16 @@ describe("test ChildrenMatrix.getPossibleSlots function", () => {
     m.setChild({ i: 0, j: 0 }, {});
     expect(m.getPossibleSlots()).toMatchArryIgnoringOrder([
       { i: 0, j: 1 },
-      { i: 1, j: 0 }
+      { i: 1, j: 0 },
+      { i: 1, j: 1 }
     ]);
 
     m.setChild({ i: 0, j: 1 }, {});
     expect(m.getPossibleSlots()).toMatchArryIgnoringOrder([
       { i: 0, j: 2 },
       { i: 1, j: 0 },
-      { i: 1, j: 1 }
-    ]);
-
-    m.setChild({ i: 1, j: 0 }, {});
-    expect(m.getPossibleSlots()).toMatchArryIgnoringOrder([
-      { i: 0, j: 2 },
       { i: 1, j: 1 },
-      { i: 2, j: 0 }
+      { i: 1, j: 2 }
     ]);
   });
 });
