@@ -1,10 +1,10 @@
 const { ChildrenMatrix } = require("../index");
 
-const child1 = { guid: "child1" };
-const child2 = { guid: "child2" };
-const child3 = { guid: "child3" };
-const child4 = { guid: "child4" };
-const child5 = { guid: "child5" };
+const child1 = { guid: "child1", globalBounds: {} };
+const child2 = { guid: "child2", globalBounds: {} };
+const child3 = { guid: "child3", globalBounds: {} };
+const child4 = { guid: "child4", globalBounds: {} };
+const child5 = { guid: "child5", globalBounds: {} };
 
 test("test ChildrenMatrix.rearrangeMatrix function", () => {
   const m = new ChildrenMatrix([child1, child2, child3, child4, child5]);

@@ -30,7 +30,54 @@ function ChildrenMatrix(children) {
   this.matrix = new Array(this.n)
     .fill(null)
     .map(_ => new Array(this.n).fill(null));
+
+  this.calculateGlobalBounds();
 }
+
+ChildrenMatrix.prototype.calculateGlobalBounds = function() {
+  const firstChildBounds = this.children[0].globalBounds;
+
+  const minX = this.children.reduce((acc, child) => {
+    if (child.globalBounds.x < acc) {
+      return child.globalBounds.x;
+    }
+
+    return acc;
+  }, firstChildBounds.x);
+
+  const minY = this.children.reduce((acc, child) => {
+    if (child.globalBounds.y < acc) {
+      return child.globalBounds.y;
+    }
+
+    return acc;
+  }, firstChildBounds.y);
+
+  const maxXPlusWidth = this.children.reduce((acc, child) => {
+    if (child.globalBounds.x + child.globalBounds.width > acc) {
+      return child.globalBounds.x + child.globalBounds.width;
+    }
+
+    return acc;
+  }, firstChildBounds.x + firstChildBounds.width);
+
+  const maxYPlusHeight = this.children.reduce((acc, child) => {
+    if (child.globalBounds.y + child.globalBounds.height > acc) {
+      return child.globalBounds.y + child.globalBounds.height;
+    }
+
+    return acc;
+  }, firstChildBounds.y + firstChildBounds.height);
+
+  const globalBounds = {
+    x: minX,
+    y: minY,
+    width: maxXPlusWidth - minX,
+    height: maxYPlusHeight - minY
+  };
+
+  this.globalBounds = globalBounds;
+};
 
 /**
  * sets a child node in a given empty slot
@@ -49,6 +96,36 @@ ChildrenMatrix.prototype.setChild = function({ i, j }, child) {
  */
 ChildrenMatrix.prototype.getChild = function({ i, j }) {
   return this.matrix[i][j];
+};
+
+ChildrenMatrix.prototype.getLeftChild = function({ i, j }) {
+  let topChild = null;
+
+  let iteratingJ = j;
+
+  while (iteratingJ > 0) {
+    if (this.getChild({ i, j: j - 1 })) {
+      topChild = this.getChild({ i, j: j - 1 });
+    }
+    iteratingJ--;
+  }
+
+  return topChild;
+};
+
+ChildrenMatrix.prototype.getTopChild = function({ i, j }) {
+  let leftChild = null;
+
+  let iteratingI = i;
+
+  while (iteratingI > 0) {
+    if (this.getChild({ i: i - 1, j })) {
+      leftChild = this.getChild({ i: i - 1, j });
+    }
+    iteratingI--;
+  }
+
+  return leftChild;
 };
 
 /**
@@ -78,10 +155,10 @@ ChildrenMatrix.prototype.getSlotColumnNeighbors = function({ i, j }) {
 ChildrenMatrix.prototype.flatten = function() {
   const flattenedArray = [];
 
-  this.matrix.forEach(row => {
-    row.forEach(node => {
+  this.matrix.forEach((row, rowIndex) => {
+    row.forEach((node, columnIndex) => {
       if (node) {
-        flattenedArray.push(node);
+        flattenedArray.push({ node, slot: { i: rowIndex, j: columnIndex } });
       }
     });
   });
@@ -382,7 +459,7 @@ ChildrenMatrix.prototype.rearrangeMatrix = function(targetSlot) {
   }
 
   const children = new Array(childrenCount);
-  children.fill({});
+  children.fill({ globalBounds: {} });
 
   const newChildrenMatrix = new ChildrenMatrix(children);
 

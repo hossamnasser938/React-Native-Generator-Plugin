@@ -2,7 +2,7 @@ const { ChildrenMatrix } = require("../index");
 
 describe("test ChildrenMatrix.getSlotRowNeighbors function", () => {
   test("should return an empty array for 2x2 matrix", () => {
-    const m = new ChildrenMatrix([{}, {}]);
+    const m = new ChildrenMatrix([{ globalBounds: {} }, { globalBounds: {} }]);
 
     m.setChild({ i: 0, j: 0 }, { id: "id1" });
 
@@ -15,7 +15,11 @@ describe("test ChildrenMatrix.getSlotRowNeighbors function", () => {
   });
 
   test("should return an empty array for 3x3 matrix", () => {
-    const m = new ChildrenMatrix([{}, {}, {}]);
+    const m = new ChildrenMatrix([
+      { globalBounds: {} },
+      { globalBounds: {} },
+      { globalBounds: {} }
+    ]);
 
     m.setChild({ i: 0, j: 0 }, { id: "id1" });
 
@@ -35,7 +39,7 @@ describe("test ChildrenMatrix.getSlotRowNeighbors function", () => {
   });
 
   test("should return an array of children for 2x2 matrix", () => {
-    const m = new ChildrenMatrix([{}, {}]);
+    const m = new ChildrenMatrix([{ globalBounds: {} }, { globalBounds: {} }]);
 
     m.setChild({ i: 0, j: 0 }, { id: "id1" });
     m.setChild({ i: 1, j: 1 }, { id: "id2" });
@@ -45,7 +49,11 @@ describe("test ChildrenMatrix.getSlotRowNeighbors function", () => {
   });
 
   test("should return an array of children for 3x3 matrix", () => {
-    const m = new ChildrenMatrix([{}, {}, {}]);
+    const m = new ChildrenMatrix([
+      { globalBounds: {} },
+      { globalBounds: {} },
+      { globalBounds: {} }
+    ]);
 
     m.setChild({ i: 0, j: 0 }, { id: "id1" });
 

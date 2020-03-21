@@ -1,12 +1,12 @@
 const { ChildrenMatrix } = require("../index");
 
-const child1 = { guid: "child1" };
-const child2 = { guid: "child2" };
-const child3 = { guid: "child3" };
-const child4 = { guid: "child4" };
-const child5 = { guid: "child5" };
-const child6 = { guid: "child6" };
-const child7 = { guid: "child7" };
+const child1 = { guid: "child1", globalBounds: {} };
+const child2 = { guid: "child2", globalBounds: {} };
+const child3 = { guid: "child3", globalBounds: {} };
+const child4 = { guid: "child4", globalBounds: {} };
+const child5 = { guid: "child5", globalBounds: {} };
+const child6 = { guid: "child6", globalBounds: {} };
+const child7 = { guid: "child7", globalBounds: {} };
 
 test("test ChildrenMatrix.getToBeMergedRowsCount function", () => {
   const m = new ChildrenMatrix([

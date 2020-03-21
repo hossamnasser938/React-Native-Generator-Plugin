@@ -10,8 +10,12 @@ const {
  * @param {*} ellipse an instance of Ellipse
  * @returns string ui code
  */
-function generateEllipseCode(ellipse) {
-  const style = generateGraphicNodeStyles(ellipse);
+function generateEllipseCode(ellipse, additionalStyles) {
+  const style = {
+    alignItems: "flex-start",
+    ...additionalStyles,
+    ...generateGraphicNodeStyles(ellipse)
+  };
 
   const { radiusX, radiusY, isCircle } = ellipse;
 
@@ -36,7 +40,7 @@ function generateEllipseCode(ellipse) {
   const children = getParentChildren(ellipse);
 
   if (children.length) {
-    return generateContainerCode(children, style);
+    return generateContainerCode(children, ellipse, style);
   }
 
   return `<View style={${JSON.stringify(style)}}/>\n`;

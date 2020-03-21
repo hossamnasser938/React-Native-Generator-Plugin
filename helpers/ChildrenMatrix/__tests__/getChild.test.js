@@ -1,8 +1,8 @@
 const { ChildrenMatrix } = require("../index");
 
-const child1 = { guid: "child1" };
-const child2 = { guid: "child2" };
-const child3 = { guid: "child3" };
+const child1 = { guid: "child1", globalBounds: {} };
+const child2 = { guid: "child2", globalBounds: {} };
+const child3 = { guid: "child3", globalBounds: {} };
 
 test("test ChildrenMatrix.getChild function", () => {
   const m = new ChildrenMatrix([child1, child2, child3]);

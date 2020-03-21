@@ -2,7 +2,7 @@ const { ChildrenMatrix } = require("../index");
 
 describe("test ChildrenMatrix.getMostSuitableSlot function", () => {
   test("test 2x2 matrix", () => {
-    const m = new ChildrenMatrix([{}, {}]);
+    const m = new ChildrenMatrix([{ globalBounds: {} }, { globalBounds: {} }]);
 
     const existingChild = {
       globalBounds: { x: 100, y: 100, width: 50, height: 50 }
@@ -24,7 +24,11 @@ describe("test ChildrenMatrix.getMostSuitableSlot function", () => {
   });
 
   test("test 3x3 matrix", () => {
-    const m = new ChildrenMatrix([{}, {}, {}]);
+    const m = new ChildrenMatrix([
+      { globalBounds: {} },
+      { globalBounds: {} },
+      { globalBounds: {} }
+    ]);
 
     const existingChild1 = {
       globalBounds: { x: 100, y: 100, width: 50, height: 50 }

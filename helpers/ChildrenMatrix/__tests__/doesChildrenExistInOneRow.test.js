@@ -1,9 +1,9 @@
 const { ChildrenMatrix } = require("../index");
 
-const child1 = { guid: "child1" };
-const child2 = { guid: "child2" };
-const child3 = { guid: "child3" };
-const child4 = { guid: "child4" };
+const child1 = { guid: "child1", globalBounds: {} };
+const child2 = { guid: "child2", globalBounds: {} };
+const child3 = { guid: "child3", globalBounds: {} };
+const child4 = { guid: "child4", globalBounds: {} };
 
 describe("test ChildrenMatrix.doesChildrenExistInOneRow function", () => {
   test("should return true", () => {

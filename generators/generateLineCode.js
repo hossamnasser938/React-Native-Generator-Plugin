@@ -7,10 +7,10 @@ const {
  * @param {*} line an instance of Line
  * @returns string ui code
  */
-function generateLineCode(line) {
+function generateLineCode(line, additionalStyles) {
   // TODO: handle diagonal lines
 
-  const style = {};
+  const style = { ...additionalStyles };
 
   const { start, end, strokeEnabled, stroke, strokeWidth, globalBounds } = line;
 

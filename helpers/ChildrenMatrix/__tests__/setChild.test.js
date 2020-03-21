@@ -1,7 +1,7 @@
 const { ChildrenMatrix } = require("../index");
 
 test("test ChildrenMatrix.setChild function", () => {
-  const m = new ChildrenMatrix([{}, {}]);
+  const m = new ChildrenMatrix([{ globalBounds: {} }, { globalBounds: {} }]);
 
   expect(m.matrix[0][0]).toBeFalsy();
 

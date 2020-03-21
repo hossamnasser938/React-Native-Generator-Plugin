@@ -15,7 +15,7 @@ function generateArtboardCode(artboard) {
 
   let code = `{/* <Screen ${artboard.name}> */}\n`;
 
-  code += generateContainerCode(getParentChildren(artboard), style);
+  code += generateContainerCode(getParentChildren(artboard), artboard, style);
 
   code += `{/* </Screen ${artboard.name}> */}\n\n`;
 

@@ -12,46 +12,46 @@ const { generateRepeatGridCode } = require("./generateRepeatGridCode");
 const { generateLinkedGraphicCode } = require("./generateLinkedGraphicCode");
 const { generateChildrenMatrixCode } = require("./generateChildrenMatrixCode");
 
-function generateNodeCode(node) {
+function generateNodeCode(node, additionalStyles) {
   switch (node.constructor.name) {
     case "Artboard":
       return generateArtboardCode(node);
 
     case "Rectangle":
-      return generateRectangleCode(node);
+      return generateRectangleCode(node, additionalStyles);
 
     case "Ellipse":
-      return generateEllipseCode(node);
+      return generateEllipseCode(node, additionalStyles);
 
     case "Polygon":
-      return generatePolygonCode(node);
+      return generatePolygonCode(node, additionalStyles);
 
     case "Line":
-      return generateLineCode(node);
+      return generateLineCode(node, additionalStyles);
 
     case "Path":
-      return generatePathCode(node);
+      return generatePathCode(node, additionalStyles);
 
     case "BooleanGroup":
-      return generateBooleanGroupCode(node);
+      return generateBooleanGroupCode(node, additionalStyles);
 
     case "Text":
-      return generateTextCode(node);
+      return generateTextCode(node, additionalStyles);
 
     case "Group":
-      return generateGroupCode(node);
+      return generateGroupCode(node, additionalStyles);
 
     case "SymbolInstance":
-      return generateSymbolInstanceCode(node);
+      return generateSymbolInstanceCode(node, additionalStyles);
 
     case "RepeatGrid":
-      return generateRepeatGridCode(node);
+      return generateRepeatGridCode(node, additionalStyles);
 
     case "LinkedGraphic":
-      return generateLinkedGraphicCode(node);
+      return generateLinkedGraphicCode(node, additionalStyles);
 
     case "ChildrenMatrix":
-      return generateChildrenMatrixCode(node);
+      return generateChildrenMatrixCode(node, null, additionalStyles);
 
     default:
       return "<StrangeNode />\n";

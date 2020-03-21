@@ -10,8 +10,12 @@ const {
  * @param {*} rectangle an instance of Rectangle
  * @returns string ui code
  */
-function generateRectangleCode(rectangle) {
-  const style = generateGraphicNodeStyles(rectangle);
+function generateRectangleCode(rectangle, additionalStyles) {
+  const style = {
+    alignItems: "flex-start",
+    ...generateGraphicNodeStyles(rectangle),
+    ...additionalStyles
+  };
 
   const { width, height, hasRoundedCorners, effectiveCornerRadii } = rectangle;
 
@@ -39,7 +43,7 @@ function generateRectangleCode(rectangle) {
   const children = getParentChildren(rectangle);
 
   if (children.length) {
-    return generateContainerCode(children, style);
+    return generateContainerCode(children, rectangle, style);
   }
 
   return `<View style={${JSON.stringify(style)}}/>\n`;

@@ -1,7 +1,7 @@
 const { ChildrenMatrix } = require("../index");
 describe("test ChildrenMatrix.calculateSlotChildMetric function", () => {
   test("when having row neighbours", () => {
-    const m = new ChildrenMatrix([{}, {}]);
+    const m = new ChildrenMatrix([{ globalBounds: {} }, { globalBounds: {} }]);
 
     m.setChild(
       { i: 0, j: 0 },
@@ -26,7 +26,7 @@ describe("test ChildrenMatrix.calculateSlotChildMetric function", () => {
   });
 
   test("when having column neighbours", () => {
-    const m = new ChildrenMatrix([{}, {}]);
+    const m = new ChildrenMatrix([{ globalBounds: {} }, { globalBounds: {} }]);
 
     m.setChild(
       { i: 0, j: 0 },
@@ -51,7 +51,12 @@ describe("test ChildrenMatrix.calculateSlotChildMetric function", () => {
   });
 
   test("when having both row and column neighbours", () => {
-    const m = new ChildrenMatrix([{}, {}, {}, {}]);
+    const m = new ChildrenMatrix([
+      { globalBounds: {} },
+      { globalBounds: {} },
+      { globalBounds: {} },
+      { globalBounds: {} }
+    ]);
 
     m.setChild(
       { i: 0, j: 0 },
