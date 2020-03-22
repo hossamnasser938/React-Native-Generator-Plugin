@@ -12,7 +12,6 @@ const {
  */
 function generateRectangleCode(rectangle, additionalStyles) {
   const styles = {
-    alignItems: "flex-start",
     ...additionalStyles
   };
 

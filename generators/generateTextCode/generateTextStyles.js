@@ -1,4 +1,3 @@
-const { convertFill } = require("../../helpers/convertFill");
 const {
   convertFontFamilyAttribute,
   convertFontStyleAttribute,
@@ -48,7 +47,7 @@ function generateTextStyles(textElement) {
   };
 
   if (fillEnabled || strokeEnabled) {
-    style.color = fillEnabled ? convertFill(fill) : stroke.toHex(true);
+    style.color = fillEnabled ? fill.toHex() : stroke.toHex(true);
   }
 
   return style;

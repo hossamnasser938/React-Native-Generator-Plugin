@@ -1,4 +1,3 @@
-const { convertFill } = require("../../helpers/convertFill");
 const {
   convertFontFamilyAttribute,
   convertFontStyleAttribute,
@@ -45,8 +44,7 @@ function generateTextRangeStyles(textRange) {
   };
 
   if (fill) {
-    // Handled only Color. TODO: handle LinearGradientFill, RadialGradientFill, ImageFill
-    style.color = convertFill(fill);
+    style.color = fill.toHex(true);
   }
 
   return style;

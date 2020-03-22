@@ -12,7 +12,6 @@ const {
  */
 function generateEllipseCode(ellipse, additionalStyles) {
   const styles = {
-    alignItems: "flex-start",
     ...additionalStyles
   };
 

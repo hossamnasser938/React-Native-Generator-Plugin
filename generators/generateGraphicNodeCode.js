@@ -3,7 +3,6 @@ const { getParentChildren } = require("../helpers/childNearestParent/index");
 const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
-const { convertFill } = require("../helpers/convertFill");
 
 /**
  * generates graphicNode(either a Rectangle or Ellipse) code
@@ -15,23 +14,47 @@ function generateGraphicNodeCode(graphicNode, additionalStyles) {
 
   const { fillEnabled, fill, strokeEnabled, stroke, strokeWidth } = graphicNode;
 
-  if (fillEnabled) {
-    styles.backgroundColor = convertFill(fill);
-  }
-
   if (strokeEnabled) {
     styles.borderWidth = pixelUnitPreprocessor(strokeWidth);
     const strokeAsHexColor = stroke.toHex(true);
     styles.borderColor = strokeAsHexColor;
   }
 
+  let element = "View";
+
+  if (fillEnabled) {
+    switch (fill.constructor.name) {
+      case "Color":
+        styles.backgroundColor = fill.toHex(true);
+        break;
+
+      case "ImageFill":
+        element = "Image";
+        break;
+
+      default:
+    }
+  }
+
   const children = getParentChildren(graphicNode);
 
   if (children.length) {
-    return generateContainerCode(children, graphicNode, styles);
+    return element === "View"
+      ? generateContainerCode(children, graphicNode, styles)
+      : `<ImageBackground style={${JSON.stringify(
+          styles
+        )}} source={{/* add your source here */}}>\n${generateContainerCode(
+          children,
+          graphicNode,
+          { flex: 1 }
+        )}</ImageBackground>`;
   }
 
-  return `<View style={${JSON.stringify(styles)}}/>\n`;
+  return `<${element} style={${JSON.stringify(
+    element === "View" ? { alignItems: "flex-start", ...styles } : styles
+  )}}${
+    element === "Image" ? " source={{/* add your source here */}}" : ""
+  } />\n`;
 }
 
 module.exports = {
