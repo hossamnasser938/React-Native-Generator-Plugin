@@ -33,6 +33,7 @@ function generateGraphicNodeCode(graphicNode, additionalStyles) {
         break;
 
       default:
+        styles.backgroundColor = "#ffffff";
     }
   }
 
