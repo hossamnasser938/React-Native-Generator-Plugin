@@ -1,4 +1,4 @@
-const { generateGraphicNodeStyles } = require("./generateGraphicNodeStyles");
+const { generateGraphicNodeCode } = require("./generateGraphicNodeCode");
 const { generateContainerCode } = require("./generateContainerCode");
 const { getParentChildren } = require("../helpers/childNearestParent/index");
 const {
@@ -11,39 +11,32 @@ const {
  * @returns string ui code
  */
 function generateEllipseCode(ellipse, additionalStyles) {
-  const style = {
+  const styles = {
     alignItems: "flex-start",
-    ...additionalStyles,
-    ...generateGraphicNodeStyles(ellipse)
+    ...additionalStyles
   };
 
   const { radiusX, radiusY, isCircle } = ellipse;
 
   if (isCircle) {
-    style.width = pixelUnitPreprocessor(radiusX * 2);
-    style.height = pixelUnitPreprocessor(radiusX * 2);
-    style.borderRadius = radiusX;
+    styles.width = pixelUnitPreprocessor(radiusX * 2);
+    styles.height = pixelUnitPreprocessor(radiusX * 2);
+    styles.borderRadius = radiusX;
   } else {
     if (radiusX > radiusY) {
-      style.width = pixelUnitPreprocessor(radiusY * 2);
-      style.height = pixelUnitPreprocessor(radiusY * 2);
-      style.borderRadius = radiusY;
-      style.transform = [{ scaleX: radiusX / radiusY }];
+      styles.width = pixelUnitPreprocessor(radiusY * 2);
+      styles.height = pixelUnitPreprocessor(radiusY * 2);
+      styles.borderRadius = radiusY;
+      styles.transform = [{ scaleX: radiusX / radiusY }];
     } else {
-      style.width = pixelUnitPreprocessor(radiusX * 2);
-      style.height = pixelUnitPreprocessor(radiusX * 2);
-      style.borderRadius = radiusX;
-      style.transform = [{ scaleY: radiusY / radiusX }];
+      styles.width = pixelUnitPreprocessor(radiusX * 2);
+      styles.height = pixelUnitPreprocessor(radiusX * 2);
+      styles.borderRadius = radiusX;
+      styles.transform = [{ scaleY: radiusY / radiusX }];
     }
   }
 
-  const children = getParentChildren(ellipse);
-
-  if (children.length) {
-    return generateContainerCode(children, ellipse, style);
-  }
-
-  return `<View style={${JSON.stringify(style)}}/>\n`;
+  return generateGraphicNodeCode(ellipse, styles);
 }
 
 module.exports = {

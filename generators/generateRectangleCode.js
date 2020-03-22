@@ -1,4 +1,4 @@
-const { generateGraphicNodeStyles } = require("./generateGraphicNodeStyles");
+const { generateGraphicNodeCode } = require("./generateGraphicNodeCode");
 const { generateContainerCode } = require("./generateContainerCode");
 const { getParentChildren } = require("../helpers/childNearestParent/index");
 const {
@@ -11,16 +11,15 @@ const {
  * @returns string ui code
  */
 function generateRectangleCode(rectangle, additionalStyles) {
-  const style = {
+  const styles = {
     alignItems: "flex-start",
-    ...generateGraphicNodeStyles(rectangle),
     ...additionalStyles
   };
 
   const { width, height, hasRoundedCorners, effectiveCornerRadii } = rectangle;
 
-  style.width = pixelUnitPreprocessor(width);
-  style.height = pixelUnitPreprocessor(height);
+  styles.width = pixelUnitPreprocessor(width);
+  styles.height = pixelUnitPreprocessor(height);
 
   if (hasRoundedCorners) {
     const { topLeft, topRight, bottomRight, bottomLeft } = effectiveCornerRadii;
@@ -31,22 +30,16 @@ function generateRectangleCode(rectangle, additionalStyles) {
       )
     ) {
       // all values are equal
-      style.borderRadius = pixelUnitPreprocessor(topLeft);
+      styles.borderRadius = pixelUnitPreprocessor(topLeft);
     } else {
-      style.borderTopStartRadius = pixelUnitPreprocessor(topLeft);
-      style.borderTopEndRadius = pixelUnitPreprocessor(topRight);
-      style.borderBottomEndRadius = pixelUnitPreprocessor(bottomRight);
-      style.borderBottomStartRadius = pixelUnitPreprocessor(bottomLeft);
+      styles.borderTopStartRadius = pixelUnitPreprocessor(topLeft);
+      styles.borderTopEndRadius = pixelUnitPreprocessor(topRight);
+      styles.borderBottomEndRadius = pixelUnitPreprocessor(bottomRight);
+      styles.borderBottomStartRadius = pixelUnitPreprocessor(bottomLeft);
     }
   }
 
-  const children = getParentChildren(rectangle);
-
-  if (children.length) {
-    return generateContainerCode(children, rectangle, style);
-  }
-
-  return `<View style={${JSON.stringify(style)}}/>\n`;
+  return generateGraphicNodeCode(rectangle, styles);
 }
 
 module.exports = {
