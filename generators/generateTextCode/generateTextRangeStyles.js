@@ -9,6 +9,7 @@ const {
   convertTextScriptAttribute,
   convertTextAlignAttribute
 } = require("./converters");
+const { representColor } = require("../../helpers/representColor");
 
 /**
  * generates style for text range item
@@ -44,7 +45,7 @@ function generateTextRangeStyles(textRange) {
   };
 
   if (fill) {
-    style.color = fill.toHex(true);
+    style.color = representColor(fill);
   }
 
   return style;

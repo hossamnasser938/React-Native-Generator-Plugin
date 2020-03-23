@@ -3,6 +3,7 @@ const { getParentChildren } = require("../helpers/childNearestParent/index");
 const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
+const { representColor } = require("../helpers/representColor");
 
 /**
  * generates graphicNode(either a Rectangle or Ellipse) code
@@ -16,7 +17,7 @@ function generateGraphicNodeCode(graphicNode, additionalStyles) {
 
   if (strokeEnabled) {
     styles.borderWidth = pixelUnitPreprocessor(strokeWidth);
-    const strokeAsHexColor = stroke.toHex(true);
+    const strokeAsHexColor = representColor(stroke);
     styles.borderColor = strokeAsHexColor;
   }
 
@@ -25,7 +26,7 @@ function generateGraphicNodeCode(graphicNode, additionalStyles) {
   if (fillEnabled) {
     switch (fill.constructor.name) {
       case "Color":
-        styles.backgroundColor = fill.toHex(true);
+        styles.backgroundColor = representColor(fill);
         break;
 
       case "ImageFill":

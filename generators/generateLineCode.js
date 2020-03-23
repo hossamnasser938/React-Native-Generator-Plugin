@@ -1,6 +1,7 @@
 const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
+const { representColor } = require("../helpers/representColor");
 
 /**
  * generates code for line element
@@ -15,7 +16,7 @@ function generateLineCode(line, additionalStyles) {
   const { start, end, strokeEnabled, stroke, strokeWidth, globalBounds } = line;
 
   if (strokeEnabled) {
-    style.backgroundColor = stroke.toHex(true);
+    style.backgroundColor = representColor(stroke);
 
     if (start.x !== end.x) {
       // horizontal

@@ -9,6 +9,7 @@ const {
   convertTextScriptAttribute,
   convertTextAlignAttribute
 } = require("./converters");
+const { representColor } = require("../../helpers/representColor");
 
 /**
  * generates style for text element
@@ -47,7 +48,7 @@ function generateTextStyles(textElement) {
   };
 
   if (fillEnabled || strokeEnabled) {
-    style.color = fillEnabled ? fill.toHex() : stroke.toHex(true);
+    style.color = fillEnabled ? representColor(fill) : representColor(stroke);
   }
 
   return style;
