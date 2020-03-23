@@ -99,33 +99,44 @@ ChildrenMatrix.prototype.getChild = function({ i, j }) {
 };
 
 ChildrenMatrix.prototype.getLeftChild = function({ i, j }) {
-  let topChild = null;
-
   let iteratingJ = j;
 
   while (iteratingJ > 0) {
-    if (this.getChild({ i, j: j - 1 })) {
-      topChild = this.getChild({ i, j: j - 1 });
+    const left = this.getChild({ i, j: iteratingJ - 1 });
+    if (left) {
+      return left;
     }
     iteratingJ--;
   }
 
-  return topChild;
+  return null;
 };
 
+/**
+ * gets the nearest top child(the child with max y + height withing the nearest row that have children)
+ * @param slot
+ */
 ChildrenMatrix.prototype.getTopChild = function({ i, j }) {
-  let leftChild = null;
+  let topChild = null;
 
-  let iteratingI = i;
-
-  while (iteratingI > 0) {
-    if (this.getChild({ i: i - 1, j })) {
-      leftChild = this.getChild({ i: i - 1, j });
-    }
-    iteratingI--;
+  if (i > 0) {
+    this.matrix[i - 1].forEach(node => {
+      if (node) {
+        if (!topChild) {
+          topChild = node;
+        } else {
+          if (
+            topChild.globalBounds.y + topChild.globalBounds.height <
+            node.globalBounds.y + node.globalBounds.height
+          ) {
+            topChild = node;
+          }
+        }
+      }
+    });
   }
 
-  return leftChild;
+  return topChild;
 };
 
 /**
