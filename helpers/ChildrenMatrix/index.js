@@ -98,6 +98,11 @@ ChildrenMatrix.prototype.getChild = function({ i, j }) {
   return this.matrix[i][j];
 };
 
+/**
+ * gets the nearest left child
+ * @param slot
+ * @returns node
+ */
 ChildrenMatrix.prototype.getLeftChild = function({ i, j }) {
   let iteratingJ = j;
 
@@ -115,6 +120,7 @@ ChildrenMatrix.prototype.getLeftChild = function({ i, j }) {
 /**
  * gets the nearest top child(the child with max y + height withing the nearest row that have children)
  * @param slot
+ * @returns node
  */
 ChildrenMatrix.prototype.getTopChild = function({ i, j }) {
   let topChild = null;
