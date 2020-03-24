@@ -1,8 +1,10 @@
+const { toFixed } = require("../preprocessors/toFixed");
+
 function generateSceneNodeStyles(node) {
   const styles = {};
 
   if (node.opacity && node.opacity < 1) {
-    styles.opacity = node.opacity;
+    styles.opacity = toFixed(node.opacity);
   }
 
   return styles;

@@ -4,6 +4,7 @@ const { getParentChildren } = require("../helpers/childNearestParent/index");
 const {
   pixelUnitPreprocessor
 } = require("../preprocessors/pixelUnitPreprocessor");
+const { toFixed } = require("../preprocessors/toFixed");
 
 /**
  * generates code for ellipse element
@@ -26,12 +27,12 @@ function generateEllipseCode(ellipse, additionalStyles) {
       styles.width = pixelUnitPreprocessor(radiusY * 2);
       styles.height = pixelUnitPreprocessor(radiusY * 2);
       styles.borderRadius = radiusY;
-      styles.transform = [{ scaleX: radiusX / radiusY }];
+      styles.transform = [{ scaleX: toFixed(radiusX / radiusY) }];
     } else {
       styles.width = pixelUnitPreprocessor(radiusX * 2);
       styles.height = pixelUnitPreprocessor(radiusX * 2);
       styles.borderRadius = radiusX;
-      styles.transform = [{ scaleY: radiusY / radiusX }];
+      styles.transform = [{ scaleY: toFixed(radiusY / radiusX) }];
     }
   }
 
