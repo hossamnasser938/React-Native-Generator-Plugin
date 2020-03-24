@@ -98,21 +98,18 @@ function canBeParentForChild(child, node) {
 }
 
 function whichIsNearestParent(parent1, parent2) {
-  const parent1Diameter = calculateNodeDiameter(parent1);
-  const parent2Diameter = calculateNodeDiameter(parent2);
-
   // updating this order of comparison may break reverse looping
-  if (parent1Diameter < parent2Diameter) {
+  if (parent1.globalBounds.y < parent2.globalBounds.y) {
     return parent2;
+  } else if (parent1.globalBounds.y === parent2.globalBounds.y) {
+    if (parent1.globalBounds.x < parent2.globalBounds.x) {
+      return parent2;
+    } else {
+      return parent1;
+    }
+  } else {
+    return parent1;
   }
-
-  return parent1;
-}
-
-function calculateNodeDiameter(node) {
-  return Math.sqrt(
-    Math.pow(node.globalBounds.x, 2) + Math.pow(node.globalBounds.y, 2)
-  );
 }
 
 /**
