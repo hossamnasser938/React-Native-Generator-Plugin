@@ -10,6 +10,7 @@ const {
   filterChildrenWithNoParents,
   clearChildNearestParent
 } = require("../helpers/childNearestParent/index");
+const { save } = require("../helpers/output/save");
 
 async function generateCodeForSelectedComponent(selection) {
   try {
@@ -54,11 +55,21 @@ async function generateCodeForSelectedComponent(selection) {
       }
 
       if (selection.items.length === 1) {
-        console.log(generateNodeCode(selection.items[0]));
+        await save([
+          {
+            name: selection.items[0].name,
+            code: generateNodeCode(selection.items[0])
+          }
+        ]);
       } else {
-        console.log(
-          generateContainerCode(filterChildrenWithNoParents(selection.items))
-        );
+        await save([
+          {
+            name: "SelectedComponent",
+            code: generateContainerCode(
+              filterChildrenWithNoParents(selection.items)
+            )
+          }
+        ]);
       }
     }
 
