@@ -9,12 +9,15 @@ const { createComponentSkeleton } = require("./createComponentSkeleton");
 async function save(components) {
   try {
     const folder = await fs.getFolder();
-    components.forEach(async ({ name, code }, index) => {
-      const file = await folder.createFile(`component${index}.js`);
-      await file.write(createComponentSkeleton(code));
-    });
 
-    alert("Files Saved");
+    if (folder) {
+      components.forEach(async ({ name, code }, index) => {
+        const file = await folder.createFile(`component${index}.js`);
+        await file.write(createComponentSkeleton(code));
+      });
+
+      alert("Files Saved");
+    }
   } catch (e) {
     error("Unexpected error occurred");
   }
