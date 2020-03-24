@@ -13,11 +13,11 @@ function generateArtboardCode(artboard) {
 
   const style = { flex: 1 };
 
-  let code = `{/* <Screen ${artboard.name}> */}\n`;
-
-  code += generateContainerCode(getParentChildren(artboard), artboard, style);
-
-  code += `{/* </Screen ${artboard.name}> */}\n\n`;
+  let code = generateContainerCode(
+    getParentChildren(artboard),
+    artboard,
+    style
+  );
 
   return code;
 }
