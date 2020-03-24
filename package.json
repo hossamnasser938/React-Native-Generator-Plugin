@@ -27,5 +27,8 @@
     "setupFilesAfterEnv": [
       "./jestSetup.js"
     ]
+  },
+  "dependencies": {
+    "js-beautify": "^1.10.3"
   }
 }

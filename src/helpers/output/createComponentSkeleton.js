@@ -1,3 +1,4 @@
+const beautify = require("js-beautify");
 const elements = ["View", "Text", "Image"];
 
 function createComponentSkeleton(uiCode) {
@@ -19,7 +20,12 @@ export default () => {
 };
 `;
 
-  return component;
+  const beautifiedComponent = beautify(component, {
+    indent_size: 2,
+    operator_position: "preserve-newline"
+  });
+
+  return beautifiedComponent;
 }
 
 module.exports = {
