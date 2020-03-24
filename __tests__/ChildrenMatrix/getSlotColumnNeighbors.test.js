@@ -1,4 +1,4 @@
-const { ChildrenMatrix } = require("../index");
+const { ChildrenMatrix } = require("../../src/helpers/ChildrenMatrix/index");
 
 describe("test ChildrenMatrix.getSlotColumnNeighbors function", () => {
   test("should return an empty array for 2x2 matrix", () => {

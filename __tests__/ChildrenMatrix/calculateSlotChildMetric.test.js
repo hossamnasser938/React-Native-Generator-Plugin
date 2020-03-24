@@ -1,4 +1,5 @@
-const { ChildrenMatrix } = require("../index");
+const { ChildrenMatrix } = require("../../src/helpers/ChildrenMatrix/index");
+
 describe("test ChildrenMatrix.calculateSlotChildMetric function", () => {
   test("when having row neighbours", () => {
     const m = new ChildrenMatrix([{ globalBounds: {} }, { globalBounds: {} }]);

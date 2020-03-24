@@ -1,4 +1,4 @@
-const { ChildrenMatrix } = require("../index");
+const { ChildrenMatrix } = require("../../src/helpers/ChildrenMatrix/index");
 
 const child1 = { globalBounds: { x: 200, y: 200, width: 50, height: 50 } };
 const child2 = { globalBounds: { x: 0, y: 500, width: 50, height: 50 } };

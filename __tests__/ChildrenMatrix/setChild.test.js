@@ -1,4 +1,4 @@
-const { ChildrenMatrix } = require("../index");
+const { ChildrenMatrix } = require("../../src/helpers/ChildrenMatrix/index");
 
 test("test ChildrenMatrix.setChild function", () => {
   const m = new ChildrenMatrix([{ globalBounds: {} }, { globalBounds: {} }]);

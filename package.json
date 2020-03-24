@@ -3,13 +3,25 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-  "scripts": {
-    "test": "jest"
-  },
   "author": "Hossam Abdelnaser",
   "license": "ISC",
+  "scripts": {
+    "start": "npm run debug:watch",
+    "test": "jest",
+    "build": "npm run compile && xdpm package dist",
+    "compile": "webpack --config webpack.config.js --mode production",
+    "debug:install": "webpack --config webpack.config.js --mode development && xdpm install dist -o",
+    "debug:watch": "xdpm watch dist | webpack --config webpack.config.js --mode development --watch",
+    "debug:watch-prerelease": "xdpm watch dist -w p | webpack --config webpack.config.js --mode development --watch",
+    "lint": "eslint src/**/*.js --ignore-pattern node_modules/"
+  },
   "devDependencies": {
-    "jest": "^25.1.0"
+    "@adobe/xdpm": "^4.0.0",
+    "@types/adobe-xd": "AdobeXD/typings",
+    "eslint": "^6.8.0",
+    "jest": "^25.1.0",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "jest": {
     "setupFilesAfterEnv": [

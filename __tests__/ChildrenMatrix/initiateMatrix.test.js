@@ -1,4 +1,4 @@
-const { ChildrenMatrix } = require("../index");
+const { ChildrenMatrix } = require("../../src/helpers/ChildrenMatrix/index");
 
 describe("test initiating new childdren matrix object", () => {
   describe("should initiate children matrix correctly", () => {
