@@ -12,7 +12,7 @@ async function save(components) {
 
     if (folder) {
       components.forEach(async ({ name, code }, index) => {
-        const file = await folder.createFile(`component${index}.js`);
+        const file = await folder.createFile(`Component${index}.js`);
         await file.write(createComponentSkeleton(code));
       });
 
