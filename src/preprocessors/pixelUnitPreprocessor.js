@@ -1,3 +1,5 @@
+const { toFixed } = require("./toFixed");
+
 /**
  * preprocesses pixel units to be compatibe with css prepreocessors like react-native-extended-stylesheet
  * @param {*} unit a number representing pixels
@@ -5,7 +7,7 @@
  */
 function pixelUnitPreprocessor(unit) {
   // for now no options. In the future may be something like this `${unit}rem`
-  return unit;
+  return toFixed(unit);
 }
 
 module.exports = {
