@@ -1,4 +1,4 @@
-const beautify = require("js-beautify");
+const { prettifyCode } = require("./prettifyCode");
 const elements = ["View", "Text", "Image"];
 
 function createComponentSkeleton(uiCode) {
@@ -10,7 +10,7 @@ function createComponentSkeleton(uiCode) {
     }
   });
 
-  let component = `import React from 'react';
+  const component = `import React from 'react';
 import {${existingElements.join(", ")}} from 'react-native';
 
 export default () => {
@@ -20,12 +20,7 @@ export default () => {
 };
 `;
 
-  const beautifiedComponent = beautify(component, {
-    indent_size: 2,
-    operator_position: "preserve-newline"
-  });
-
-  return beautifiedComponent;
+  return prettifyCode(component);
 }
 
 module.exports = {
