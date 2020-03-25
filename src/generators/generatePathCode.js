@@ -6,7 +6,7 @@ const { generatePlaceholderCode } = require("./generatePlaceholderCode");
  * @returns string ui code
  */
 function generatePathCode(path) {
-  return `{/* <Path /> {Path is not supported. It can be exported as Svg} */}\n${generatePlaceholderCode(
+  return `\n{/* <Path /> {Path is not supported. It can be exported as Svg} */}\n${generatePlaceholderCode(
     path
   )}`;
 }
