@@ -1,4 +1,4 @@
-const { error } = require("../plugin-toolkit/dialogs.js");
+const { error } = require("@adobe/xd-plugin-toolkit/lib/dialogs");
 const { generateArtboardCode } = require("../generators/generateArtboardCode");
 const {
   clearChildNearestParent

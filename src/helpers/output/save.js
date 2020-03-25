@@ -1,5 +1,5 @@
 const fs = require("uxp").storage.localFileSystem;
-const { error, alert } = require("../../plugin-toolkit/dialogs.js");
+const { error, alert } = require("@adobe/xd-plugin-toolkit/lib/dialogs");
 const { createComponentSkeleton } = require("./createComponentSkeleton");
 
 /**

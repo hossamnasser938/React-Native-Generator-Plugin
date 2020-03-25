@@ -29,6 +29,7 @@
     ]
   },
   "dependencies": {
+    "@adobe/xd-plugin-toolkit": "0.0.1",
     "js-beautify": "^1.10.3"
   }
 }
