@@ -1,3 +1,7 @@
+const {
+  pixelUnitPreprocessor
+} = require("../preprocessors/pixelUnitPreprocessor");
+
 /**
  * generates code for a set of nodes aligned in a ChildrenMatrix
  * @param {*} childrenMatrix
@@ -131,11 +135,11 @@ function generateMarginStyles(slot, childrenMatrix) {
   const styles = {};
 
   if (marginStart) {
-    styles.marginStart = marginStart;
+    styles.marginStart = pixelUnitPreprocessor(marginStart);
   }
 
   if (marginTop) {
-    styles.marginTop = marginTop;
+    styles.marginTop = pixelUnitPreprocessor(marginTop);
   }
 
   return styles;
@@ -152,11 +156,11 @@ function generatePaddingStyles(childrenMatrix, parent) {
   const paddingTop = childrenMatrix.globalBounds.y - parent.globalBounds.y;
 
   if (paddingStart) {
-    styles.paddingStart = paddingStart;
+    styles.paddingStart = pixelUnitPreprocessor(paddingStart);
   }
 
   if (paddingTop) {
-    styles.paddingTop = paddingTop;
+    styles.paddingTop = pixelUnitPreprocessor(paddingTop);
   }
 
   return styles;
