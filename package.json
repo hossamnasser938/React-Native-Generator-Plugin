@@ -1,10 +1,10 @@
 {
-  "name": "generate-react-native-ui-plugin",
+  "name": "react-native-generate-plugin",
   "version": "1.0.0",
-  "description": "",
+  "description": "generates react native components directly from design",
   "main": "main.js",
   "author": "Hossam Abdelnaser",
-  "license": "ISC",
+  "license": "MIT",
   "scripts": {
     "start": "npm run debug:watch",
     "test": "jest",
