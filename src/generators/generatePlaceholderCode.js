@@ -1,9 +1,15 @@
-/* generates a placeholder code for unsupported node types */
+const {
+  pixelUnitPreprocessor
+} = require("../preprocessors/pixelUnitPreprocessor");
 
+/**
+ * generates a placeholder code for unsupported node types
+ * @param {*} node
+ */
 function generatePlaceholderCode(node) {
   const styles = {
-    width: node.globalBounds.width,
-    height: node.globalBounds.height,
+    width: pixelUnitPreprocessor(node.globalBounds.width),
+    height: pixelUnitPreprocessor(node.globalBounds.height),
     backgroundColor: "#000000"
   };
 
