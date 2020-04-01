@@ -1,6 +1,8 @@
 # React-Native-Generator-Plugin
 Adobe XD Plugin that generates React Native components directly from design.
 
+Press [Here](https://xd.adobelanding.com/en/xd-plugin-download/?pluginId=ecd83aaa) to download the plugin if you have Adobe XD installed.
+
 ![Demo GIF](https://github.com/hossamnasser938/React-Native-Generator-Plugin/blob/master/plugin_readme_demo.gif)
 
 Component code generated in the video/GIF:
